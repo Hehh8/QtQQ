@@ -19,7 +19,7 @@ QPixmap CommonUtils::getRoundImage(const QPixmap & src, QPixmap & mask, QSize ma
 {
 	if (maskSize == QSize(0, 0))
 	{
-		maskSize - mask.size();
+		maskSize = mask.size();
 	}
 	else
 	{
