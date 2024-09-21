@@ -1,7 +1,8 @@
 #include "titlebar.h"
 
 #include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <QPainter>
+#include <QMouseEvent>
 
 #define BUTTON_HEIGHT 27	// 按钮高度
 #define BUTTON_WIDTH 27		// 按钮高度
@@ -71,31 +72,139 @@ void TitleBar::initConnections()
 	connect(m_pButtonClose, &QPushButton::clicked, this, &TitleBar::onButtonCloseClicked);
 }
 
+// 设置标题栏图标
 void TitleBar::setTitleIcon(QString & filePath)
 {
+	QPixmap titleIcon(filePath);
+	m_pIcon->setFixedSize(titleIcon.size());
+	m_pIcon->setPixmap(titleIcon);
 }
 
+// 设置标题栏内容
 void TitleBar::setTitleContent(QString & titleContent)
 {
+	m_pTitleContent->setText(titleContent);
+	m_titleContent = titleContent;
 }
 
+// 设置标题栏宽度
 void TitleBar::setTitleWidth(int width)
 {
+	setFixedWidth(width);
 }
 
+// 设置标题栏按钮类型
 void TitleBar::setButtonType(ButtonType buttonType)
 {
+	m_buttonType = buttonType;
+	switch (buttonType)
+	{
+	case MIN_BUTTON:
+	{
+		m_pButtonRestore->setVisible(false);
+		m_pButtonMax->setVisible(false);
+	}
+	break;
+	case MIN_MAX_BUTTON:
+	{
+		m_pButtonRestore->setVisible(false);
+	}
+	break;
+	case ONLY_CLOSE_BUTTON:
+	{
+		m_pButtonMin->setVisible(false);
+		m_pButtonRestore->setVisible(false);
+		m_pButtonMax->setVisible(false);
+	}
+	break;
+	default:
+		break;
+	}
 }
 
+// 保存窗口最大化前窗口的位置及大小
 void TitleBar::setRestoreInfo(const QPoint & point, const QSize & size)
 {
+	m_restorePos = point;
+	m_restoreSize = size;
 }
 
+// 获取窗口最大化前窗口的位置及大小
 void TitleBar::getRestoreInfo(QPoint & point, QSize & size)
 {
+	point = m_restorePos;
+	size = m_restoreSize;
 }
 
+// 绘制标题栏
 void TitleBar::paintEvent(QPaintEvent * event)
+{
+	// 设置背景色
+	QPainter painter(this);
+	QPainterPath pathBack;
+	pathBack.setFillRule(Qt::WindingFill);							//设置填充规则
+	pathBack.addRoundedRect(QRect(0, 0, width(), height()), 3, 3);	//添加圆角矩形到绘图路径
+	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
+	// 当窗口最大化或还原后,窗口长度改变,标题栏相应做出改变
+	// parWidget()返回父部件
+	if (width() != parentWidget()->width())
+	{
+		setFixedWidth(parentWidget()->width());
+	}
+}
+
+// 双击响应事件,主要实现双击标题栏进行最大化最小化的操作
+void TitleBar::mouseDoubleClickEvent(QMouseEvent * event)
+{
+	// 只有存在最大化、最小化按钮才有效
+	if (m_buttonType == MIN_MAX_BUTTON)
+	{
+		if (m_pButtonMax->isVisible())
+		{
+			onButtonCloseClicked();
+		}
+		else
+		{
+			onButtonRestoreClicked();
+		}
+	}
+	return QWidget::mouseDoubleClickEvent(event);
+}
+
+// 通过鼠标按下、鼠标移动、鼠标释放事件实现拖动标题栏达到移动窗口效果
+void TitleBar::mousePressEvent(QMouseEvent * event)
+{
+	if (m_buttonType == MIN_MAX_BUTTON)
+	{
+		// 在窗口最大化时禁止拖动窗口
+		if (m_pButtonMax->isVisible())
+		{
+			m_isPressed = true;
+			m_startMovePos = event->globalPos();	// globalPos()返回事件发生时鼠标所在的全局位置
+		}
+	}
+	else
+	{
+		m_isPressed = true;
+		m_startMovePos = event->globalPos();
+	}
+	return QWidget::mousePressEvent(event);
+}
+
+void TitleBar::mouseMoveEvent(QMouseEvent * event)
+{
+	if (m_isPressed)
+	{
+		QPoint movePoint = event->globalPos() - m_startMovePos;
+		QPoint widgetPos = parentWidget()->pos();
+		m_startMovePos = event->globalPos();
+		parentWidget()->move(widgetPos.x() + movePoint.x(), widgetPos.y() + movePoint.y());
+	}
+	return QWidget::mouseMoveEvent(event);
+}
+
+void TitleBar::mousReleaseEvent(QMouseEvent * event)
 {
 }
 

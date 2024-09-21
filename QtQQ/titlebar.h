@@ -70,6 +70,6 @@ private:
 	bool m_isPressed;
 	QPoint m_startMovePos;
 
-	QString m_titleConten;		// 标题栏内容
+	QString m_titleContent;		// 标题栏内容
 	ButtonType m_buttonType;	// 标题栏右上角按钮类型
 };
