@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QFile>
 
 #define BUTTON_HEIGHT 27	// 按钮高度
 #define BUTTON_WIDTH 27		// 按钮高度
@@ -204,10 +205,45 @@ void TitleBar::mouseMoveEvent(QMouseEvent * event)
 	return QWidget::mouseMoveEvent(event);
 }
 
-void TitleBar::mousReleaseEvent(QMouseEvent * event)
+void TitleBar::mouseReleaseEvent(QMouseEvent * event)
 {
+	m_isPressed = false;
+	return QWidget::mouseReleaseEvent(event);
 }
 
+// 加载样式表
 void TitleBar::loadStyleSheet(const QString & sheetName)
 {
+	QFile file(":/Resources/QSS" + sheetName + ".css");
+	file.open(QFile::ReadOnly);
+	if (file.isOpen())
+	{
+		QString styleSheet = this->styleSheet();
+		styleSheet += QLatin1String(file.readAll());
+		setStyleSheet(styleSheet);
+	}
+}
+
+void TitleBar::onButtonMinClicked()
+{
+	emit signalButtonMinClicked();
+}
+
+void TitleBar::onButtonRestoreClicked()
+{
+	m_pButtonRestore->setVisible(false);
+	m_pButtonMax->setVisible(true);
+	emit signalButtonRestoreClicked();
+}
+
+void TitleBar::onButtonMaxClicked()
+{
+	m_pButtonMax->setVisible(false);
+	m_pButtonRestore->setVisible(true);
+	emit signalButtonMaxClicked();
+}
+
+void TitleBar::onButtonCloseClicked()
+{
+	emit signalButtonCloseClicked();
 }

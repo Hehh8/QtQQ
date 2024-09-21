@@ -34,7 +34,7 @@ private:
 	void mouseDoubleClickEvent(QMouseEvent *event);	// 鼠标双击事件
 	void mousePressEvent(QMouseEvent *event);		// 鼠标按下事件
 	void mouseMoveEvent(QMouseEvent *event);		// 鼠标移动事件
-	void mousReleaseEvent(QMouseEvent *event);		// 鼠标松开事件
+	void mouseReleaseEvent(QMouseEvent *event);		// 鼠标松开事件
 
 	void initControl();								// 初始化控件
 	void initConnections();							// 初始化信号与槽的连接
@@ -44,7 +44,7 @@ signals:
 	// 标题栏按钮点击时触发的信号
 	void signalButtonMinClicked();					// 最小化按钮
 	void signalButtonRestoreClicked();				// 最大化还原按钮
-	void signalButtonMaxCkicked();					// 最大化按钮
+	void signalButtonMaxClicked();					// 最大化按钮
 	void signalButtonCloseClicked();				// 关闭按钮
 
 private slots:
