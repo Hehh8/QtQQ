@@ -1,4 +1,5 @@
 #include "basicwindow.h"
+//#include ""
 
 #include <QDesktopWidget>
 #include <QFile>
@@ -10,8 +11,10 @@
 BasicWindow::BasicWindow(QWidget *parent)
 	: QDialog(parent)
 {
+	m_colorBackGround = CommonUtils::getDefaultSkinColor();
 	setWindowFlags(Qt::FramelessWindowHint);
 	setAttribute(Qt::WA_TranslucentBackground, true);
+	connect(NotifyManager::getInstance(), &BasicWindow::onSignalSkinChanged(const QColor&), this, &BasicWindow)
 }
 
 BasicWindow::~BasicWindow()
