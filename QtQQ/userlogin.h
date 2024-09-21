@@ -11,6 +11,13 @@ public:
 	UserLogin(QWidget *parent = Q_NULLPTR);
 	~UserLogin();
 
+private slots:
+	void onLoginBtnClicked();
+
+private:
+	void initControl();
+
+
 private:
 	Ui::UserLogin ui;
 };

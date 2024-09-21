@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QApplication>
 #include <QMouseEvent>
+#include <QDebug>
 
 BasicWindow::BasicWindow(QWidget *parent)
 	: QDialog(parent)
@@ -50,7 +51,7 @@ void BasicWindow::initTitleBar(ButtonType buttontype)
 void BasicWindow::loadStyleSheet(const QString & sheetName)
 {
 	m_styleName = sheetName;
-	QFile file(":/Resources/QSS" + sheetName + ".css");
+	QFile file(":/Resources/QSS/" + sheetName + ".css");
 	file.open(QFile::ReadOnly);
 
 	if (file.isOpen())
@@ -63,6 +64,8 @@ void BasicWindow::loadStyleSheet(const QString & sheetName)
 		QString g = QString::number(m_colorBackGround.green());
 		QString b = QString::number(m_colorBackGround.blue());
 
+		qDebug() << "r = " << r << "  g = " << g << "  b = " << b;
+
 		qsstyleSheet += QString("QWidget[titleskin=true]{"
 								"background-color:rgb(%1,%2,%3);"
 								"border-top-left-radius:4px;}"
@@ -70,12 +73,12 @@ void BasicWindow::loadStyleSheet(const QString & sheetName)
 								"border-top:1px solid rgba(%1,%2,%3,100);"
 								"background-color:rgba(%1,%2,%3,50);"
 								"border-bottom-left-radius:4px;"
-								"border-bottom-right-radius:4px;")
+								"border-bottom-right-radius:4px;}")
 								.arg(r).arg(g).arg(b);
 
 		setStyleSheet(qsstyleSheet);
+		file.close();
 	}
-	file.close();
 }
 
 // ±³¾°Í¼
@@ -104,7 +107,7 @@ QPixmap BasicWindow::getRoundImage(const QPixmap & src, QPixmap & mask, QSize ma
 	}
 	else
 	{
-		mask.scaled(maskSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+		mask = mask.scaled(maskSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 	}
 
 	// ±£´æ×ª»»ºóµÄÍ¼Ïñ
@@ -115,7 +118,7 @@ QPixmap BasicWindow::getRoundImage(const QPixmap & src, QPixmap & mask, QSize ma
 	painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 	painter.drawPixmap(0, 0, mask);
 	painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
-	painter.drawPixmap(0, 0, src.scaled(Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	painter.drawPixmap(0, 0, src.scaled(maskSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	painter.end();
 
 	return QPixmap::fromImage(resultImage);
