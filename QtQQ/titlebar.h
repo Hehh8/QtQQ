@@ -18,7 +18,7 @@ class TitleBar : public QWidget
 
 public:
 	TitleBar(QWidget *parent = nullptr);
-	~TitleBar();
+	virtual ~TitleBar();
 
 	void setTitleIcon(QString &filePath);			// 设置标题栏图标
 	void setTitleContent(QString &titleContent);	// 设置标题栏内容
