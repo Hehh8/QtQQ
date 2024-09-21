@@ -1,5 +1,6 @@
 #include "basicwindow.h"
-//#include ""
+#include "CommonUtils.h"
+#include "notifymanager.h"
 
 #include <QDesktopWidget>
 #include <QFile>
@@ -14,7 +15,8 @@ BasicWindow::BasicWindow(QWidget *parent)
 	m_colorBackGround = CommonUtils::getDefaultSkinColor();
 	setWindowFlags(Qt::FramelessWindowHint);
 	setAttribute(Qt::WA_TranslucentBackground, true);
-	connect(NotifyManager::getInstance(), &BasicWindow::onSignalSkinChanged(const QColor&), this, &BasicWindow)
+	connect(NotifyManager::getInstance(), &NotifyManager::signalSkinChanged, this, &BasicWindow::onSignalSkinChanged);
+/*	connect(NotifyManager::getInstance(), SIGNAL(signalSkinChanged(const QColor&)), this, SLOT(onSignalSkinChanged(const QColor&)));*/
 }
 
 BasicWindow::~BasicWindow()

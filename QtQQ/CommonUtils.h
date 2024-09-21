@@ -33,9 +33,9 @@ public:
 	~CommonUtils();
 
 public:
-	static QPixmap getRoundImage(const QPixmap &src, QPixmap &mask, QSize maskSize = (0, 0));
+	static QPixmap getRoundImage(const QPixmap &src, QPixmap &mask, QSize maskSize = QSize(0, 0));
 	static void loadStyleSheet(QWidget *widget, const QString &sheetName);
 	static void setDefaultSkinColor(const QColor &color);
-	static void getDefaultSkinColor()
+	static QColor getDefaultSkinColor();
 };
 

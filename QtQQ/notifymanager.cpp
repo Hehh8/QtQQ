@@ -1,4 +1,5 @@
 #include "notifymanager.h"
+#include "CommonUtils.h"
 
 NotifyManager *NotifyManager::instance = nullptr;
 
