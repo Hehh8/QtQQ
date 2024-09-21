@@ -16,7 +16,7 @@ public:
 	void loadStyleSheet(const QString &sheetName);
 
 	// 获取圆头像
-	QPixmap getRoundImage(const QPixmap &src, QPixmap &mask, QSize makesize = QSize(0, 0));
+	QPixmap getRoundImage(const QPixmap &src, QPixmap &mask, QSize maskSize = QSize(0, 0));
 
 private:
 	void initBackGroundColor();		// 初始化背景
