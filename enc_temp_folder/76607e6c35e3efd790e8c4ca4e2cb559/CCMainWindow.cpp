@@ -24,9 +24,7 @@ CCMainWindow::CCMainWindow(QWidget *parent)
 {
     ui.setupUi(this);
 
-	// 设置主窗口风格
 	setWindowFlags(windowFlags() | Qt::Tool);
-
 	loadStyleSheet("CCMainWindow");
 
 	initControl();
@@ -126,11 +124,5 @@ QWidget * CCMainWindow::addOtherAppExtension(const QString & appPath, const QStr
 	btn->setObjectName(appName);
 	btn->setProperty("hasborder", true);
 
-	connect(btn, &QPushButton::clicked, this, &CCMainWindow::onAppIconClicked);
-
 	return btn;
-}
-
-void CCMainWindow::onAppIconClicked()
-{
 }

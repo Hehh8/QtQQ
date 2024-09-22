@@ -20,9 +20,6 @@ public:
 	// 添加应用部件(app图片路径,app布局对象名)
 	QWidget *addOtherAppExtension(const QString &appPath, const QString appName);
 
-private slots:
-	void onAppIconClicked();
-
 private:
     Ui::CCMainWindowClass ui;
 
