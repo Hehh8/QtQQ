@@ -88,6 +88,8 @@
     <ClCompile Include="basicwindow.cpp" />
     <ClCompile Include="CommonUtils.cpp" />
     <ClCompile Include="notifymanager.cpp" />
+    <ClCompile Include="qclicklabel.cpp" />
+    <ClCompile Include="skinwindow.cpp" />
     <ClCompile Include="titlebar.cpp" />
     <ClCompile Include="userlogin.cpp" />
     <QtRcc Include="CCMainWindow.qrc" />
@@ -95,6 +97,7 @@
     <QtMoc Include="CCMainWindow.h" />
     <ClCompile Include="CCMainWindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="skinwindow.ui" />
     <QtUic Include="userlogin.ui" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +111,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonUtils.h" />
+    <QtMoc Include="qclicklabel.h" />
+    <QtMoc Include="skinwindow.h" />
     <QtMoc Include="userlogin.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

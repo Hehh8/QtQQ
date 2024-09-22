@@ -91,7 +91,7 @@ void BasicWindow::initBackGroundColor()
 	style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 }
 
-// 子类化部件是,需要重写绘图事件设置背景图
+// 子类初始化部时,需要重写绘图事件设置背景图
 void BasicWindow::paintEvent(QPaintEvent * event)
 {
 	initBackGroundColor();
@@ -156,7 +156,7 @@ void BasicWindow::mousePressEvent(QMouseEvent * event)
 	if (event->button() == Qt::LeftButton)
 	{
 		m_mousePressed = true;
-		m_mousePoint = event->globalPos();
+		m_mousePoint = event->globalPos() - pos();
 		event->accept();
 	}
 }

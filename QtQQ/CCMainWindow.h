@@ -12,6 +12,7 @@ public:
 	virtual ~CCMainWindow();
 
 public:
+	void initTimer();								// 初始化计时器
 	void initControl();
 	void setUserName(const QString &userName);		// 设置用户名
 	void setLevelPixmap(int level);					// 设置等级
