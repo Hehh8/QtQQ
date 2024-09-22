@@ -9,15 +9,15 @@ QWidget#CCMainWindowClass
     border-radius:4px;
 }
 
-QPushButton#palcehold1 {
+QPushButton#placehold1 {
    background-image: url(:Resources/MainWindow/medalwall_ani.png);
    background-repeat: no-repeat;
    background-color:transparent;
 }
-QPushButton#palcehold1:hover {
+QPushButton#placehold1:hover {
    background-image: url(:Resources/MainWindow/btn_medalwall_dark.png); 
 }
-QPushButton#palcehold1:pressed {
+QPushButton#placehold1:pressed {
    background-image: url(:Resources/MainWindow/btn_medalwall_dark.png); 
 }
 

@@ -15,7 +15,7 @@ public:
 	void initControl();
 	void setUserName(const QString &userName);
 	void setLevelPixmap(int level);
-	void setHeadPixmap(const QString &headPath);
+	void setGeadPixmap(const QString &headPath);
 
 private:
     Ui::CCMainWindowClass ui;

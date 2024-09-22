@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>680</height>
+    <height>682</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>280</width>
-    <height>680</height>
+    <height>682</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>CCMainWindow</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_6">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -112,7 +112,7 @@
          <widget class="QPushButton" name="placehold1">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
+            <horstretch>4</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
@@ -137,7 +137,7 @@
          <widget class="QPushButton" name="placehold2">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
+            <horstretch>4</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
@@ -162,7 +162,7 @@
          <widget class="QPushButton" name="sysmin">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
+            <horstretch>4</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
@@ -187,7 +187,7 @@
          <widget class="QPushButton" name="sysclose">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
+            <horstretch>4</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
@@ -212,6 +212,9 @@
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
          <number>12</number>
         </property>
@@ -225,7 +228,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QLabel" name="headLbael">
+         <widget class="QLabel" name="headLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -256,6 +259,9 @@
           </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="nameLabel">
               <property name="sizePolicy">
@@ -276,17 +282,13 @@
                 <height>22</height>
                </size>
               </property>
-              <property name="styleSheet">
-               <string notr="true">color:rgb(255,255,255);
-font:75 12pt &quot;微软雅黑&quot;;</string>
-              </property>
               <property name="text">
                <string>星星亦无痕</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="stausBtn">
+             <widget class="QPushButton" name="staisBtn">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -357,9 +359,6 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
               <height>22</height>
              </size>
             </property>
-            <property name="frame">
-             <bool>false</bool>
-            </property>
             <property name="placeholderText">
              <string>个性签名</string>
             </property>
@@ -403,21 +402,6 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
       </sizepolicy>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>1</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>1</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
        <widget class="QWidget" name="searchWidget" native="true">
         <property name="sizePolicy">
@@ -439,6 +423,9 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
          </size>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="spacing">
+          <number>0</number>
+         </property>
          <property name="leftMargin">
           <number>6</number>
          </property>
@@ -453,21 +440,6 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
          </property>
          <item>
           <widget class="QLineEdit" name="searchLineEdit">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="frame">
-            <bool>false</bool>
-           </property>
            <property name="placeholderText">
             <string>搜索</string>
            </property>
@@ -503,22 +475,16 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
       </item>
       <item>
        <widget class="QScrollArea" name="scrollArea">
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
         <property name="widgetResizable">
          <bool>true</bool>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
         <widget class="QWidget" name="scrollAreaWidgetContents">
          <property name="geometry">
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>278</width>
-           <height>474</height>
+           <width>258</width>
+           <height>448</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -527,56 +493,21 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <property name="spacing">
-           <number>0</number>
+         <widget class="QTreeWidget" name="treeWidget">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>278</width>
+            <height>458</height>
+           </rect>
           </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QTreeWidget" name="treeWidget">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="verticalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="editTriggers">
-             <set>QAbstractItemView::AllEditTriggers</set>
-            </property>
-            <property name="indentation">
-             <number>0</number>
-            </property>
-            <property name="headerHidden">
-             <bool>true</bool>
-            </property>
-            <property name="expandsOnDoubleClick">
-             <bool>false</bool>
-            </property>
-            <column>
-             <property name="text">
-              <string notr="true">1</string>
-             </property>
-            </column>
-           </widget>
-          </item>
-         </layout>
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+         </widget>
         </widget>
        </widget>
       </item>
@@ -607,6 +538,9 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
       <bool>true</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5" stretch="1,1">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>6</number>
       </property>
@@ -620,10 +554,17 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
        <number>6</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="bottomLayout_up"/>
+       <layout class="QHBoxLayout" name="bottomLayout_up">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QPushButton" name="bottomBtn_1">
           <property name="sizePolicy">
@@ -779,6 +720,9 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>13</width>
@@ -790,7 +734,7 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
         <item>
          <widget class="QPushButton" name="bottomBtn_7">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>

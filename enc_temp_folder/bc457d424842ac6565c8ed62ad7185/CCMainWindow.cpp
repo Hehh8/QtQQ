@@ -68,7 +68,6 @@ void CCMainWindow::setLevelPixmap(int level)
 	ui.levelBtn->setIconSize(ui.levelBtn->size());
 }
 
-void CCMainWindow::setHeadPixmap(const QString & headPath)
+void CCMainWindow::setGeadPixmap(const QString & headPath)
 {
-
 }
