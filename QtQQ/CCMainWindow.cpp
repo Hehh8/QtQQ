@@ -1,10 +1,12 @@
 #include "CCMainWindow.h"
 #include "skinwindow.h"
 #include "systray.h"
+#include "notifymanager.h"
 
 #include <QProxyStyle>
 #include <QPainter>
 #include <QTimer>
+#include <QEvent>
 
 class CustomProxyStyle :public QProxyStyle
 {
@@ -85,8 +87,15 @@ void CCMainWindow::initControl()
 	ui.bottomLayout_up->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_9.png", "app_9"));
 	ui.bottomLayout_up->addStretch();
 
+	// 个性签名添加事件过滤器
+	ui.lineEdit->installEventFilter(this);
+	ui.searchLineEdit->installEventFilter(this);
+
 	connect(ui.sysmin, &QPushButton::clicked, this, &CCMainWindow::onShowHide);
 	connect(ui.sysclose, &QPushButton::clicked, this, &CCMainWindow::onShowClose);
+	connect(NotifyManager::getInstance(), &NotifyManager::signalSkinChanged, [this]() {
+		updateSearchStyle();
+	});
 
 	SysTray *sysTray = new SysTray(this);
 
@@ -164,10 +173,62 @@ QWidget * CCMainWindow::addOtherAppExtension(const QString & appPath, const QStr
 	return btn;
 }
 
+void CCMainWindow::updateSearchStyle()
+{
+	ui.searchWidget->setStyleSheet(QString(
+		"QWidget#searchWidget {"
+		"   background-color: rgba(%1, %2, %3, 50);"
+		"   border-bottom: 1px solid rgba(%1, %2, %3, 30);"
+		"}"
+		"QPushButton#searchBtn {"
+		"   border-image: url(:/Resources/MainWindow/search/search_icon.png);"  // 按钮图片
+		"}"
+	).arg(m_colorBackGround.red())   // 替换 %1 为红色分量
+		.arg(m_colorBackGround.green()) // 替换 %2 为绿色分量
+		.arg(m_colorBackGround.blue())  // 替换 %3 为蓝色分量
+	);
+}
+
 void CCMainWindow::resizeEvent(QResizeEvent * event)
 {
 	setUserName(QString::fromLocal8Bit("12345678900000000"));
 	BasicWindow::resizeEvent(event);
+}
+
+bool CCMainWindow::eventFilter(QObject * obj, QEvent * event)
+{
+	if (obj == ui.searchLineEdit)
+	{
+		// 键盘焦点事件
+		if (event->type() == QEvent::FocusIn)
+		{
+			// 设置 searchWidget 和按钮的样式表
+			ui.searchWidget->setStyleSheet(QString(
+				"QWidget#searchWidget {"
+				"   background-color: rgb(255, 255, 255);"  // 白色背景
+				"   border-bottom: 1px solid rgba(%1, %2, %3, 100);"  // 半透明底边框
+				"}"
+				"QPushButton#searchBtn {"
+				"   border-image: url(:/Resources/MainWindow/search/main_search_deldown.png);"  // 按钮图片
+				"}"
+				"QPushButton#searchBtn:hover {"
+				"   border-image: url(:/Resources/MainWindow/search/main_search_delhighlight.png);"  // 鼠标悬停
+				"}"
+				"QPushButton#searchBtn:pressed {"
+				"   border-image: url(:/Resources/MainWindow/search/main_search_delhighdown.png);"  // 按下时的图片
+				"}"
+			).arg(m_colorBackGround.red())   // 替换 %1 为红色分量
+				.arg(m_colorBackGround.green()) // 替换 %2 为绿色分量
+				.arg(m_colorBackGround.blue())  // 替换 %3 为蓝色分量
+			);
+		}
+		else if (event->type() == QEvent::FocusOut)
+		{
+			updateSearchStyle();
+		}
+		
+	}
+	return false;
 }
 
 void CCMainWindow::onAppIconClicked()

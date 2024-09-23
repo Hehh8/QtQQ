@@ -22,7 +22,11 @@ public:
 	QWidget *addOtherAppExtension(const QString &appPath, const QString appName);
 
 private:
+	void updateSearchStyle();	// 更新搜索样式
+
+private:
 	void resizeEvent(QResizeEvent *event);
+	bool eventFilter(QObject *obj, QEvent * event);
 
 private slots:
 	void onAppIconClicked();
