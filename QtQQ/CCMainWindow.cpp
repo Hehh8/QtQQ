@@ -1,5 +1,6 @@
 #include "CCMainWindow.h"
 #include "skinwindow.h"
+#include "systray.h"
 
 #include <QProxyStyle>
 #include <QPainter>
@@ -83,10 +84,22 @@ void CCMainWindow::initControl()
 	ui.bottomLayout_up->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_11.png", "app_11"));
 	ui.bottomLayout_up->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_9.png", "app_9"));
 	ui.bottomLayout_up->addStretch();
+
+	connect(ui.sysmin, &QPushButton::clicked, this, &CCMainWindow::onShowHide);
+	connect(ui.sysclose, &QPushButton::clicked, this, &CCMainWindow::onShowClose);
+
+	SysTray *sysTray = new SysTray(this);
+
 }
 
 void CCMainWindow::setUserName(const QString & userName)
 {
+	ui.nameLabel->adjustSize();
+
+	// 文本过程则进行省略...
+	// fontMetrics()返回QFontMetrics类对象
+	QString name = ui.nameLabel->fontMetrics().elidedText(userName, Qt::ElideRight, ui.nameLabel->width());
+	ui.nameLabel->setText(name);
 }
 
 void CCMainWindow::setLevelPixmap(int level)
@@ -149,6 +162,12 @@ QWidget * CCMainWindow::addOtherAppExtension(const QString & appPath, const QStr
 	connect(btn, &QPushButton::clicked, this, &CCMainWindow::onAppIconClicked);
 
 	return btn;
+}
+
+void CCMainWindow::resizeEvent(QResizeEvent * event)
+{
+	setUserName(QString::fromLocal8Bit("12345678900000000"));
+	BasicWindow::resizeEvent(event);
 }
 
 void CCMainWindow::onAppIconClicked()

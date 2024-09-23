@@ -87,9 +87,11 @@
   <ItemGroup>
     <ClCompile Include="basicwindow.cpp" />
     <ClCompile Include="CommonUtils.cpp" />
+    <ClCompile Include="custommenu.cpp" />
     <ClCompile Include="notifymanager.cpp" />
     <ClCompile Include="qclicklabel.cpp" />
     <ClCompile Include="skinwindow.cpp" />
+    <ClCompile Include="systray.cpp" />
     <ClCompile Include="titlebar.cpp" />
     <ClCompile Include="userlogin.cpp" />
     <QtRcc Include="CCMainWindow.qrc" />
@@ -111,6 +113,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonUtils.h" />
+    <QtMoc Include="custommenu.h" />
+    <QtMoc Include="systray.h" />
     <QtMoc Include="qclicklabel.h" />
     <QtMoc Include="skinwindow.h" />
     <QtMoc Include="userlogin.h" />
