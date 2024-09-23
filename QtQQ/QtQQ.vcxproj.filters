@@ -67,6 +67,9 @@
     <ClCompile Include="custommenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rootcontactitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="titlebar.h">
@@ -91,6 +94,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="custommenu.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="rootcontactitem.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

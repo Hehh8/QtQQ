@@ -90,6 +90,7 @@
     <ClCompile Include="custommenu.cpp" />
     <ClCompile Include="notifymanager.cpp" />
     <ClCompile Include="qclicklabel.cpp" />
+    <ClCompile Include="rootcontactitem.cpp" />
     <ClCompile Include="skinwindow.cpp" />
     <ClCompile Include="systray.cpp" />
     <ClCompile Include="titlebar.cpp" />
@@ -113,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonUtils.h" />
+    <QtMoc Include="rootcontactitem.h" />
     <QtMoc Include="custommenu.h" />
     <QtMoc Include="systray.h" />
     <QtMoc Include="qclicklabel.h" />

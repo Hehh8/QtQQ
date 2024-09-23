@@ -3,6 +3,24 @@
 #include "basicwindow.h"
 #include "ui_CCMainWindow.h"
 
+class QTreeWidget
+{
+public:
+	QTreeWidget();
+	~QTreeWidget();
+
+private:
+
+};
+
+QTreeWidget::QTreeWidget()
+{
+}
+
+QTreeWidget::~QTreeWidget()
+{
+}
+
 class CCMainWindow : public BasicWindow
 {
     Q_OBJECT
@@ -20,6 +38,7 @@ public:
 	void setStatusMenuIcon(const QString &statusPath);	// 设置状态
 	// 添加应用部件(app图片路径,app布局对象名)
 	QWidget *addOtherAppExtension(const QString &appPath, const QString appName);
+	void initContactTree();
 
 private:
 	void updateSearchStyle();	// 更新搜索样式
@@ -29,7 +48,11 @@ private:
 	bool eventFilter(QObject *obj, QEvent * event);
 
 private slots:
-	void onAppIconClicked();
+	void onAppIconClicked(QTreeWidgetItem* item, int column);
+	void onItemClicked(QTreeWidgetItem* item);
+	void onItemExpanded(QTreeWidgetItem* item);
+	void onItemCollapsed(QTreeWidgetItem* item, int column);
+	void onItemDoubleClicked(QTreeWidgetItem* item);
 
 private:
     Ui::CCMainWindowClass ui;

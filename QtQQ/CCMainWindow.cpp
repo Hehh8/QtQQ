@@ -7,6 +7,7 @@
 #include <QPainter>
 #include <QTimer>
 #include <QEvent>
+#include <QTreeWidgetItem>
 
 class CustomProxyStyle :public QProxyStyle
 {
@@ -86,6 +87,8 @@ void CCMainWindow::initControl()
 	ui.bottomLayout_up->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_11.png", "app_11"));
 	ui.bottomLayout_up->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_9.png", "app_9"));
 	ui.bottomLayout_up->addStretch();
+
+	initContactTree();
 
 	// 个性签名添加事件过滤器
 	ui.lineEdit->installEventFilter(this);
@@ -173,6 +176,22 @@ QWidget * CCMainWindow::addOtherAppExtension(const QString & appPath, const QStr
 	return btn;
 }
 
+void CCMainWindow::initContactTree()
+{
+	// 展开与收缩时的信号
+	connect(ui.treeWidget, SIGNAL(itemClicked(QTreeWidget*, int)), this, SLOT(onItemClicked(QTreeWidgetItem*, int)));
+	connect(ui.treeWidget, SIGNAL(itemExpanded(QTreeWidget*, int)), this, SLOT(onItemExpanded(QTreeWidgetItem*)));
+	connect(ui.treeWidget, SIGNAL(itemCollapsed(QTreeWidget*, int)), this, SLOT(onItemCollapsed(QTreeWidgetItem*)));
+	connect(ui.treeWidget, SIGNAL(itemDoubleClicked(QTreeWidget*, int)), this, SLOT(onItemDoubleClicked(QTreeWidgetItem*, int)));
+
+	// 根节点
+	QTreeWidgetItem *pRootGroupItem = new QTreeWidgetItem;
+	pRootGroupItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+	pRootGroupItem->setData(0, Qt::UserRole, 0);
+
+
+}
+
 void CCMainWindow::updateSearchStyle()
 {
 	ui.searchWidget->setStyleSheet(QString(
@@ -229,6 +248,22 @@ bool CCMainWindow::eventFilter(QObject * obj, QEvent * event)
 		
 	}
 	return false;
+}
+
+void CCMainWindow::onItemClicked(QTreeWidgetItem * item)
+{
+}
+
+void CCMainWindow::onItemExpanded(QTreeWidgetItem * item)
+{
+}
+
+void CCMainWindow::onItemCollapsed(QTreeWidgetItem * item, int column)
+{
+}
+
+void CCMainWindow::onItemDoubleClicked(QTreeWidgetItem * item)
+{
 }
 
 void CCMainWindow::onAppIconClicked()
