@@ -182,9 +182,9 @@ void CCMainWindow::initContactTree()
 {
 	// 展开与收缩时的信号
 	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &CCMainWindow::onItemClicked);
-	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &CCMainWindow::onItemExpanded);
-	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &CCMainWindow::onItemCollapsed);
-	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &CCMainWindow::onItemDoubleClicked);
+	connect(ui.treeWidget, &QTreeWidget::itemExpanded, this, &CCMainWindow::onItemExpanded);
+	connect(ui.treeWidget, &QTreeWidget::itemCollapsed, this, &CCMainWindow::onItemCollapsed);
+	connect(ui.treeWidget, &QTreeWidget::itemDoubleClicked, this, &CCMainWindow::onItemDoubleClicked);
 
 	// 根节点
 	QTreeWidgetItem *pRootGroupItem = new QTreeWidgetItem;
@@ -286,7 +286,7 @@ bool CCMainWindow::eventFilter(QObject * obj, QEvent * event)
 	return false;
 }
 
-void CCMainWindow::onItemClicked(QTreeWidgetItem * item)
+void CCMainWindow::onItemClicked(QTreeWidgetItem * item, int column)
 {
 	bool bIsChild = item->data(0, Qt::UserRole).toBool();
 
@@ -298,13 +298,35 @@ void CCMainWindow::onItemClicked(QTreeWidgetItem * item)
 
 void CCMainWindow::onItemExpanded(QTreeWidgetItem * item)
 {
+	bool bIsChild = item->data(0, Qt::UserRole).toBool();
+
+	if (!bIsChild)
+	{
+		// dynamic_cast 将基类对象指针(或引用)转换到继承类指针
+		RootContactitem *prootItem = dynamic_cast<RootContactitem *>(ui.treeWidget->itemWidget(item, 0));
+		if (prootItem)
+		{
+			prootItem->setExpanded(true);
+		}
+	}
 }
 
-void CCMainWindow::onItemCollapsed(QTreeWidgetItem * item, int column)
+void CCMainWindow::onItemCollapsed(QTreeWidgetItem * item)
 {
+	bool bIsChild = item->data(0, Qt::UserRole).toBool();
+
+	if (!bIsChild)
+	{
+		// dynamic_cast 将基类对象指针(或引用)转换到继承类指针
+		RootContactitem *prootItem = dynamic_cast<RootContactitem *>(ui.treeWidget->itemWidget(item, 0));
+		if (prootItem)
+		{
+			prootItem->setExpanded(false);
+		}
+	}
 }
 
-void CCMainWindow::onItemDoubleClicked(QTreeWidgetItem * item)
+void CCMainWindow::onItemDoubleClicked(QTreeWidgetItem * item, int column)
 {
 }
 

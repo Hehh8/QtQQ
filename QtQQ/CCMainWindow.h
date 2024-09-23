@@ -36,10 +36,10 @@ private:
 
 private slots:
 	void onAppIconClicked();
-	void onItemClicked(QTreeWidgetItem* item);
+	void onItemClicked(QTreeWidgetItem* item, int column);
 	void onItemExpanded(QTreeWidgetItem* item);
-	void onItemCollapsed(QTreeWidgetItem* item, int column);
-	void onItemDoubleClicked(QTreeWidgetItem* item);
+	void onItemCollapsed(QTreeWidgetItem* item);
+	void onItemDoubleClicked(QTreeWidgetItem* item, int column);
 
 private:
     Ui::CCMainWindowClass ui;
