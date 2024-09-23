@@ -19,7 +19,7 @@ public:
 	void setExpanded(bool expand);
 
 private:
-	int getrotation();
+	int rotation();
 	void setRotation(int rotation);
 
 protected:

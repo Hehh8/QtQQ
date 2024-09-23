@@ -40,7 +40,7 @@ void RootContactitem::setExpanded(bool expand)
 	m_animation->start();
 }
 
-int RootContactitem::getrotation()
+int RootContactitem::rotation()
 {
 	return m_rotation;
 }
@@ -66,7 +66,7 @@ void RootContactitem::paintEvent(QPaintEvent * event)
 	if (m_hasArrow)
 	{
 		QPixmap pixmap;
-		pixmap.load(";/Resources/MainWindow/arrow.png");
+		pixmap.load(":/Resources/MainWindow/arrow.png");
 
 		QPixmap tmpPixmap(pixmap.size());
 		tmpPixmap.fill(Qt::transparent);

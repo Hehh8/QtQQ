@@ -2,6 +2,8 @@
 #include "skinwindow.h"
 #include "systray.h"
 #include "notifymanager.h"
+#include "rootcontactitem.h"
+#include "contactitem.h"
 
 #include <QProxyStyle>
 #include <QPainter>
@@ -179,17 +181,34 @@ QWidget * CCMainWindow::addOtherAppExtension(const QString & appPath, const QStr
 void CCMainWindow::initContactTree()
 {
 	// 展开与收缩时的信号
-	connect(ui.treeWidget, SIGNAL(itemClicked(QTreeWidget*, int)), this, SLOT(onItemClicked(QTreeWidgetItem*, int)));
-	connect(ui.treeWidget, SIGNAL(itemExpanded(QTreeWidget*, int)), this, SLOT(onItemExpanded(QTreeWidgetItem*)));
-	connect(ui.treeWidget, SIGNAL(itemCollapsed(QTreeWidget*, int)), this, SLOT(onItemCollapsed(QTreeWidgetItem*)));
-	connect(ui.treeWidget, SIGNAL(itemDoubleClicked(QTreeWidget*, int)), this, SLOT(onItemDoubleClicked(QTreeWidgetItem*, int)));
+	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &CCMainWindow::onItemClicked);
+	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &CCMainWindow::onItemExpanded);
+	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &CCMainWindow::onItemCollapsed);
+	connect(ui.treeWidget, &QTreeWidget::itemClicked, this, &CCMainWindow::onItemDoubleClicked);
 
 	// 根节点
 	QTreeWidgetItem *pRootGroupItem = new QTreeWidgetItem;
 	pRootGroupItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-	pRootGroupItem->setData(0, Qt::UserRole, 0);
+	pRootGroupItem->setData(0, Qt::UserRole, 0);	// 根项数据设为0
 
+	RootContactitem *pItemName = new RootContactitem(true, ui.treeWidget);
 
+	QString strGroupName = QString::fromLocal8Bit("同学");
+	pItemName->setText(strGroupName);
+
+	// 插入分组节点
+	ui.treeWidget->addTopLevelItem(pRootGroupItem);
+	ui.treeWidget->setItemWidget(pRootGroupItem, 0, pItemName);
+
+	QStringList sCompDeps;
+	sCompDeps << QString::fromLocal8Bit("六(4)班");
+	sCompDeps << QString::fromLocal8Bit("初三(3)班");
+	sCompDeps << QString::fromLocal8Bit("高三(4)班");
+
+	for (int nIndex = 0; nIndex < sCompDeps.length(); nIndex++)
+	{
+		addGroupDeps(pRootGroupItem, sCompDeps.at(nIndex));
+	}
 }
 
 void CCMainWindow::updateSearchStyle()
@@ -206,6 +225,23 @@ void CCMainWindow::updateSearchStyle()
 		.arg(m_colorBackGround.green()) // 替换 %2 为绿色分量
 		.arg(m_colorBackGround.blue())  // 替换 %3 为蓝色分量
 	);
+}
+
+void CCMainWindow::addGroupDeps(QTreeWidgetItem * pRootGroupItem, const QString & sDeps)
+{
+	QTreeWidgetItem *pChild = new QTreeWidgetItem;
+
+
+	// 添加子节点
+	pChild->setData(0, Qt::UserRole, 1);	// 子项数据设为1
+	ContactItem *pContactItem = new ContactItem(ui.treeWidget);
+
+	pContactItem->setHeadPixmap(getRoundImage(QPixmap(":/Resources/MainWindow/girl.png"), QPixmap(":/Resources/MainWindow/head_mask.png"), pContactItem->getHeadLabelSize()));
+	pContactItem->setUserName(sDeps);
+
+	pRootGroupItem->addChild(pChild);
+	ui.treeWidget->setItemWidget(pChild, 0, pContactItem);
+
 }
 
 void CCMainWindow::resizeEvent(QResizeEvent * event)
@@ -252,6 +288,12 @@ bool CCMainWindow::eventFilter(QObject * obj, QEvent * event)
 
 void CCMainWindow::onItemClicked(QTreeWidgetItem * item)
 {
+	bool bIsChild = item->data(0, Qt::UserRole).toBool();
+
+	if (!bIsChild)
+	{
+		item->setExpanded(!item->isExpanded());	// 未展开则展开子项
+	}
 }
 
 void CCMainWindow::onItemExpanded(QTreeWidgetItem * item)

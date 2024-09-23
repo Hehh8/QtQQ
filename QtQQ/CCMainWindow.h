@@ -3,23 +3,9 @@
 #include "basicwindow.h"
 #include "ui_CCMainWindow.h"
 
-class QTreeWidget
-{
-public:
-	QTreeWidget();
-	~QTreeWidget();
+class QTreeWidgetItem;
 
-private:
 
-};
-
-QTreeWidget::QTreeWidget()
-{
-}
-
-QTreeWidget::~QTreeWidget()
-{
-}
 
 class CCMainWindow : public BasicWindow
 {
@@ -42,13 +28,14 @@ public:
 
 private:
 	void updateSearchStyle();	// 更新搜索样式
+	void addGroupDeps(QTreeWidgetItem *pRootGroupItem, const QString &sDeps);
 
 private:
 	void resizeEvent(QResizeEvent *event);
 	bool eventFilter(QObject *obj, QEvent * event);
 
 private slots:
-	void onAppIconClicked(QTreeWidgetItem* item, int column);
+	void onAppIconClicked();
 	void onItemClicked(QTreeWidgetItem* item);
 	void onItemExpanded(QTreeWidgetItem* item);
 	void onItemCollapsed(QTreeWidgetItem* item, int column);
