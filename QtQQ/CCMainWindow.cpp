@@ -78,11 +78,11 @@ void CCMainWindow::initControl()
 	QHBoxLayout *appupLayout = new QHBoxLayout;
 	appupLayout->setContentsMargins(0, 0, 0, 0);
 	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_7.png", "app_7"));
-	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_2.png", "app_7"));
-	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_3.png", "app_7"));
-	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_4.png", "app_7"));
-	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_5.png", "app_7"));
-	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_6.png", "app_7"));
+	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_2.png", "app_2"));
+	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_3.png", "app_3"));
+	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_4.png", "app_4"));
+	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_5.png", "app_5"));
+	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/app_6.png", "app_6"));
 	appupLayout->addWidget(addOtherAppExtension(":/Resources/MainWindow/app/skin.png", "app_skin"));
 	appupLayout->addStretch();
 	appupLayout->setSpacing(2);
@@ -108,6 +108,41 @@ void CCMainWindow::initControl()
 
 	SysTray *sysTray = new SysTray(this);
 
+}
+
+void CCMainWindow::updateSearchStyle()
+{
+	ui.searchWidget->setStyleSheet(QString(
+		"QWidget#searchWidget {"
+		"   background-color: rgba(%1, %2, %3, 50);"
+		"   border-bottom: 1px solid rgba(%1, %2, %3, 30);"
+		"}"
+		"QPushButton#searchBtn {"
+		"   border-image: url(:/Resources/MainWindow/search/search_icon.png);"  // 按钮图片
+		"}"
+	).arg(m_colorBackGround.red())   // 替换 %1 为红色分量
+		.arg(m_colorBackGround.green()) // 替换 %2 为绿色分量
+		.arg(m_colorBackGround.blue())  // 替换 %3 为蓝色分量
+	);
+}
+
+void CCMainWindow::addGroupDeps(QTreeWidgetItem * pRootGroupItem, const QString & sDeps)
+{
+	QTreeWidgetItem *pChild = new QTreeWidgetItem;
+
+
+	// 添加子节点
+	pChild->setData(0, Qt::UserRole, 1);	// 子项数据设为1
+	pChild->setData(0, Qt::UserRole + 1, QString::number((int)pChild));
+	ContactItem *pContactItem = new ContactItem(ui.treeWidget);
+
+	pContactItem->setHeadPixmap(getRoundImage(QPixmap(":/Resources/MainWindow/girl.png"), QPixmap(":/Resources/MainWindow/head_mask.png"), pContactItem->getHeadLabelSize()));
+	pContactItem->setUserName(sDeps);
+
+	pRootGroupItem->addChild(pChild);
+	ui.treeWidget->setItemWidget(pChild, 0, pContactItem);
+
+	m_groupMap.insert(pChild, sDeps);
 }
 
 void CCMainWindow::setUserName(const QString & userName)
@@ -216,41 +251,6 @@ void CCMainWindow::initContactTree()
 	}
 }
 
-void CCMainWindow::updateSearchStyle()
-{
-	ui.searchWidget->setStyleSheet(QString(
-		"QWidget#searchWidget {"
-		"   background-color: rgba(%1, %2, %3, 50);"
-		"   border-bottom: 1px solid rgba(%1, %2, %3, 30);"
-		"}"
-		"QPushButton#searchBtn {"
-		"   border-image: url(:/Resources/MainWindow/search/search_icon.png);"  // 按钮图片
-		"}"
-	).arg(m_colorBackGround.red())   // 替换 %1 为红色分量
-		.arg(m_colorBackGround.green()) // 替换 %2 为绿色分量
-		.arg(m_colorBackGround.blue())  // 替换 %3 为蓝色分量
-	);
-}
-
-void CCMainWindow::addGroupDeps(QTreeWidgetItem * pRootGroupItem, const QString & sDeps)
-{
-	QTreeWidgetItem *pChild = new QTreeWidgetItem;
-
-
-	// 添加子节点
-	pChild->setData(0, Qt::UserRole, 1);	// 子项数据设为1
-	pChild->setData(0, Qt::UserRole + 1, QString::number((int)pChild));
-	ContactItem *pContactItem = new ContactItem(ui.treeWidget);
-
-	pContactItem->setHeadPixmap(getRoundImage(QPixmap(":/Resources/MainWindow/girl.png"), QPixmap(":/Resources/MainWindow/head_mask.png"), pContactItem->getHeadLabelSize()));
-	pContactItem->setUserName(sDeps);
-
-	pRootGroupItem->addChild(pChild);
-	ui.treeWidget->setItemWidget(pChild, 0, pContactItem);
-
-	m_groupMap.insert(pChild, sDeps);
-}
-
 void CCMainWindow::resizeEvent(QResizeEvent * event)
 {
 	setUserName(QString::fromLocal8Bit("12345678900000000"));
@@ -349,8 +349,8 @@ void CCMainWindow::onItemCollapsed(QTreeWidgetItem * item)
 
 void CCMainWindow::onItemDoubleClicked(QTreeWidgetItem * item, int column)
 {
-	bool bIsClild = item->data(0, Qt::UserRole).toBool();
-	if (bIsClild)
+	bool bIsChild = item->data(0, Qt::UserRole).toBool();
+	if (bIsChild)
 	{
 		QString strGroup = m_groupMap.value(item);
 

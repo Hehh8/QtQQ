@@ -31,6 +31,26 @@ void TalkWindowShell::addTalkWindow(TalkWindow * talkWindow, TalkWindowItem * ta
 	m_talkWindowItemMap.insert(aItem, talkWindow);
 
 	aItem->setSelected(true);
+
+	const QPixmap pix(":/Resources/MainWindow/girl.png");
+	talkWindowItem->setHeadPixmap("");	// 设置头像
+	ui.listWidget->addItem(aItem);
+
+	ui.listWidget->setItemWidget(aItem, talkWindowItem);
+
+	onTalkWindowItemClicked(aItem);
+
+	connect(talkWindowItem, &TalkWindowItem::signalCloseClicked, [talkWindowItem, talkWindow, aItem, this]() {
+		m_talkWindowItemMap.remove(aItem);
+		talkWindow->close();
+		ui.listWidget->takeItem(ui.listWidget->row(aItem));
+		delete talkWindowItem;
+		ui.rightStackedWidget->removeWidget(talkWindow);
+		if (ui.rightStackedWidget->count() < 1)
+		{
+			close();
+		}
+	});
 }
 
 void TalkWindowShell::setCurrentWidget(QWidget * widget)
@@ -56,7 +76,7 @@ void TalkWindowShell::initControl()
 	connect(m_emotionWindow, SIGNAL(signalEmotionItemClicked(int)), this, SLOT(onEmotionClicked(int)));
 }
 
-void TalkWindowShell::onEmotionClicked(bool)
+void TalkWindowShell::onEmotionBtnClicked(bool)
 {
 	m_emotionWindow->setVisible(!m_emotionWindow->isVisible());
 	QPoint emotionPoint = this->mapToGlobal(QPoint(0, 0));	// 将当前控件的相对位置转换为屏幕的绝对位置

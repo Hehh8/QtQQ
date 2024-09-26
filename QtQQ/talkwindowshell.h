@@ -34,7 +34,7 @@ public:
 	void setCurrentWidget(QWidget *widget);
 
 public slots:
-	void onEmotionClicked(bool);	// 表情按钮执行后的槽函数
+	void onEmotionBtnClicked(bool);	// 表情按钮执行后的槽函数
 
 private:
 	void initControl();

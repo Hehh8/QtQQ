@@ -31,6 +31,7 @@ QPixmap CommonUtils::getRoundImage(const QPixmap & src, QPixmap & mask, QSize ma
 	painter.setCompositionMode(QPainter::CompositionMode_Source);
 	painter.fillRect(resultImage.rect(), Qt::transparent);
 	painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+	painter.drawPixmap(0, 0, mask);
 	painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
 	painter.drawPixmap(0, 0, src.scaled(maskSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	painter.end();

@@ -96,11 +96,13 @@ void WindowManager::addNewTalkWindow(const QString & uid, GroupType groupType, c
 		default:
 			break;
 		}
+		m_talkwindowshell->addTalkWindow(talkWindow, talkWindowItem, groupType);
 	}
 	else
 	{
 		m_talkwindowshell->setCurrentWidget(widget);
 	}
+
 
 	m_talkwindowshell->show();
 	m_talkwindowshell->activateWindow();

@@ -36,10 +36,11 @@ void TalkWindowItem::resizeEvent(QResizeEvent * event)
 	__super::resizeEvent(event);
 }
 
-void TalkWindowItem::setHeadPixmap(const QPixmap & pixmap)
+void TalkWindowItem::setHeadPixmap(const QString & pixmap)
 {
 	QPixmap mask = QPixmap(":/Resources/MainWindow/head_mask.png");
-	const QPixmap &headPixmap = CommonUtils::getRoundImage(pixmap, mask, ui.headlabel->size());
+	QPixmap head = QPixmap(":/Resources/MainWindow/girl.png");
+	const QPixmap &headPixmap = CommonUtils::getRoundImage(head, mask, ui.headlabel->size());
 	ui.headlabel->setPixmap(headPixmap);
 }
 
