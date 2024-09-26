@@ -55,6 +55,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <IncludePath>$(SolutionDir);D:\Project\Visual Studio\QtQQ\QtQQ;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
@@ -93,6 +94,7 @@
     <ClCompile Include="emotionwindow.cpp" />
     <ClCompile Include="notifymanager.cpp" />
     <ClCompile Include="qclicklabel.cpp" />
+    <ClCompile Include="qmsgtextedit.cpp" />
     <ClCompile Include="rootcontactitem.cpp" />
     <ClCompile Include="skinwindow.cpp" />
     <ClCompile Include="systray.cpp" />
@@ -126,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonUtils.h" />
+    <QtMoc Include="qmsgtextedit.h" />
     <QtMoc Include="windowmanager.h" />
     <QtMoc Include="talkwindow.h" />
     <QtMoc Include="talkwindowitem.h" />
