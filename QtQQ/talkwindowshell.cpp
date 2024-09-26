@@ -32,7 +32,6 @@ void TalkWindowShell::addTalkWindow(TalkWindow * talkWindow, TalkWindowItem * ta
 
 	aItem->setSelected(true);
 
-	const QPixmap pix(":/Resources/MainWindow/girl.png");
 	talkWindowItem->setHeadPixmap("");	// ÉèÖÃÍ·Ïñ
 	ui.listWidget->addItem(aItem);
 
@@ -56,6 +55,11 @@ void TalkWindowShell::addTalkWindow(TalkWindow * talkWindow, TalkWindowItem * ta
 void TalkWindowShell::setCurrentWidget(QWidget * widget)
 {
 	ui.rightStackedWidget->setCurrentWidget(widget);
+}
+
+QMap<QListWidgetItem*, QWidget*> TalkWindowShell::getTalkWindowItemMap() const
+{
+	return m_talkWindowItemMap;
 }
 
 void TalkWindowShell::initControl()

@@ -13,6 +13,24 @@ TalkWindowItem::~TalkWindowItem()
 {
 }
 
+void TalkWindowItem::setHeadPixmap(const QString & pixmap)
+{
+	QPixmap mask = QPixmap(":/Resources/MainWindow/head_mask.png");
+	QPixmap head = QPixmap(":/Resources/MainWindow/girl.png");
+	const QPixmap &headPixmap = CommonUtils::getRoundImage(head, mask, ui.headlabel->size());
+	ui.headlabel->setPixmap(headPixmap);
+}
+
+void TalkWindowItem::setMsgLabelContent(const QString & msg)
+{
+	ui.msgLabel->setText(msg);
+}
+
+QString TalkWindowItem::getMsgLabelText()
+{
+	return ui.msgLabel->text();
+}
+
 void TalkWindowItem::initControl()
 {
 	ui.tclosebtn->setVisible(false);
@@ -36,22 +54,5 @@ void TalkWindowItem::resizeEvent(QResizeEvent * event)
 	__super::resizeEvent(event);
 }
 
-void TalkWindowItem::setHeadPixmap(const QString & pixmap)
-{
-	QPixmap mask = QPixmap(":/Resources/MainWindow/head_mask.png");
-	QPixmap head = QPixmap(":/Resources/MainWindow/girl.png");
-	const QPixmap &headPixmap = CommonUtils::getRoundImage(head, mask, ui.headlabel->size());
-	ui.headlabel->setPixmap(headPixmap);
-}
-
-void TalkWindowItem::setMsgLabelContent(const QString & msg)
-{
-	ui.msgLabel->setText(msg);
-}
-
-QString TalkWindowItem::getMsgLabelText()
-{
-	return ui.msgLabel->text();
-}
 
 

@@ -17,6 +17,7 @@ TalkWindow::TalkWindow(QWidget *parent, const QString &uid, GroupType groupType)
 
 TalkWindow::~TalkWindow()
 {
+	WindowManager::getInstance()->deleteWindowName(m_talkId);
 }
 
 void TalkWindow::addEmotionImage(int emotionNum)
@@ -28,17 +29,23 @@ void TalkWindow::setWindowName(const QString & name)
 	ui.nameLabel->setText(name);
 }
 
-void TalkWindow::setMsgLabelContent(const QString & name)
-{
-}
-
 void TalkWindow::onSendBtnClicked(bool)
 {
 }
 
-void TalkWindow::onItemDoubleClicked()
-{
 
+void TalkWindow::onItemDoubleClicked(QTreeWidgetItem* item, int column)
+{
+	bool bIsChild = item->data(0, Qt::UserRole).toBool();
+	if (bIsChild)
+	{
+		QString strPeopleName = m_groupPeopleMap.value(item);
+		WindowManager::getInstance()->addNewTalkWindow(item->data(0, Qt::UserRole + 1).toString(), PTOP, strPeopleName);
+	}
+}
+
+void TalkWindow::setMsgLabelContent(const QString & name)
+{
 }
 
 void TalkWindow::initControl()
@@ -83,12 +90,11 @@ void TalkWindow::initControl()
 		break;
 	case PTOP:
 	{
-
+		initPtoPTalk();
 	}
 		break;
 	default:
 	{
-		initPtoPTalk();
 	}
 		break;
 	}
@@ -205,7 +211,7 @@ void TalkWindow::initMarkTalk()
 void TalkWindow::initPtoPTalk()
 {
 	QPixmap pixSkin;
-	pixSkin.load(":/Resources/MainWindow/skin/png");
+	pixSkin.load(":/Resources/MainWindow/skin.png");
 
 	ui.widget->setFixedSize(pixSkin.size());
 	QLabel *skinLabel = new QLabel(ui.widget);

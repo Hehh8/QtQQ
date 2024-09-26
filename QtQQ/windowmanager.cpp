@@ -66,31 +66,31 @@ void WindowManager::addNewTalkWindow(const QString & uid, GroupType groupType, c
 		case COMPANY:
 		{
 			talkWindow->setWindowName(QStringLiteral("公司群"));
-			talkWindow->setMsgLabelContent(QStringLiteral("公司群"));
+			talkWindowItem->setMsgLabelContent(QStringLiteral("公司群"));
 		}
 			break;
 		case PERSONELGROUP:
 		{
 			talkWindow->setWindowName(QStringLiteral("人事部"));
-			talkWindow->setMsgLabelContent(QStringLiteral("人事部"));
+			talkWindowItem->setMsgLabelContent(QStringLiteral("人事部"));
 		}
 			break;
 		case DEVELOPMENTGROUP:
 		{
 			talkWindow->setWindowName(QStringLiteral("研发部"));
-			talkWindow->setMsgLabelContent(QStringLiteral("研发部"));
+			talkWindowItem->setMsgLabelContent(QStringLiteral("研发部"));
 		}
 			break;
 		case MARKETGROUP:
 		{
 			talkWindow->setWindowName(QStringLiteral("市场部"));
-			talkWindow->setMsgLabelContent(QStringLiteral("市场部"));
+			talkWindowItem->setMsgLabelContent(QStringLiteral("市场部"));
 		}
 			break;
 		case PTOP:
 		{
-			talkWindow->setWindowName(QStringLiteral("公司群"));
-			talkWindow->setMsgLabelContent(QStringLiteral("公司群"));
+			talkWindow->setWindowName(strPeople);
+			talkWindowItem->setMsgLabelContent(strPeople);
 		}
 			break;
 		default:
@@ -100,6 +100,11 @@ void WindowManager::addNewTalkWindow(const QString & uid, GroupType groupType, c
 	}
 	else
 	{
+		// 左侧聊天列表设为选中
+		QListWidgetItem * item = m_talkwindowshell->getTalkWindowItemMap().key(widget);
+		item->setSelected(true);
+
+		// 设置右侧当前聊天窗口
 		m_talkwindowshell->setCurrentWidget(widget);
 	}
 

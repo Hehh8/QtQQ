@@ -33,6 +33,8 @@ public:
 	// 设置当前聊天窗口
 	void setCurrentWidget(QWidget *widget);
 
+	QMap<QListWidgetItem*, QWidget*> getTalkWindowItemMap() const;
+
 public slots:
 	void onEmotionBtnClicked(bool);	// 表情按钮执行后的槽函数
 

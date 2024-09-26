@@ -17,10 +17,10 @@ public:
 	void setWindowName(const QString &name);
 	void setMsgLabelContent(const QString &name);
 
-public slots:
+private slots:
 	void onSetEmotionBtnStatus();
 	void onSendBtnClicked(bool);
-	void onItemDoubleClicked();
+	void onItemDoubleClicked(QTreeWidgetItem* item, int column);
 
 private:
 	void initControl();
