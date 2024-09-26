@@ -8,7 +8,6 @@
 #include <QPainter>
 #include <QApplication>
 #include <QMouseEvent>
-#include <QDebug>
 
 BasicWindow::BasicWindow(QWidget *parent)
 	: QDialog(parent)
@@ -63,8 +62,6 @@ void BasicWindow::loadStyleSheet(const QString & sheetName)
 		QString r = QString::number(m_colorBackGround.red());
 		QString g = QString::number(m_colorBackGround.green());
 		QString b = QString::number(m_colorBackGround.blue());
-
-		qDebug() << "r = " << r << "  g = " << g << "  b = " << b;
 
 		qsstyleSheet += QString("QWidget[titleskin=true]{"
 								"background-color:rgb(%1,%2,%3);"

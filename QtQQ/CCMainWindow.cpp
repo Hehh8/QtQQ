@@ -4,12 +4,16 @@
 #include "notifymanager.h"
 #include "rootcontactitem.h"
 #include "contactitem.h"
+#include "talkwindowshell.h"
+#include "windowmanager.h"
 
 #include <QProxyStyle>
 #include <QPainter>
 #include <QTimer>
 #include <QEvent>
 #include <QTreeWidgetItem>
+#include <QMouseEvent>
+#include <QApplication>
 
 class CustomProxyStyle :public QProxyStyle
 {
@@ -193,7 +197,7 @@ void CCMainWindow::initContactTree()
 
 	RootContactitem *pItemName = new RootContactitem(true, ui.treeWidget);
 
-	QString strGroupName = QString::fromLocal8Bit("同学");
+	QString strGroupName = QString::fromLocal8Bit("hehh");
 	pItemName->setText(strGroupName);
 
 	// 插入分组节点
@@ -201,9 +205,10 @@ void CCMainWindow::initContactTree()
 	ui.treeWidget->setItemWidget(pRootGroupItem, 0, pItemName);
 
 	QStringList sCompDeps;
-	sCompDeps << QString::fromLocal8Bit("六(4)班");
-	sCompDeps << QString::fromLocal8Bit("初三(3)班");
-	sCompDeps << QString::fromLocal8Bit("高三(4)班");
+	sCompDeps << QString::fromLocal8Bit("公司群");
+	sCompDeps << QString::fromLocal8Bit("人事部");
+	sCompDeps << QString::fromLocal8Bit("研发部");
+	sCompDeps << QString::fromLocal8Bit("市场部");
 
 	for (int nIndex = 0; nIndex < sCompDeps.length(); nIndex++)
 	{
@@ -234,6 +239,7 @@ void CCMainWindow::addGroupDeps(QTreeWidgetItem * pRootGroupItem, const QString 
 
 	// 添加子节点
 	pChild->setData(0, Qt::UserRole, 1);	// 子项数据设为1
+	pChild->setData(0, Qt::UserRole + 1, QString::number((int)pChild));
 	ContactItem *pContactItem = new ContactItem(ui.treeWidget);
 
 	pContactItem->setHeadPixmap(getRoundImage(QPixmap(":/Resources/MainWindow/girl.png"), QPixmap(":/Resources/MainWindow/head_mask.png"), pContactItem->getHeadLabelSize()));
@@ -242,6 +248,7 @@ void CCMainWindow::addGroupDeps(QTreeWidgetItem * pRootGroupItem, const QString 
 	pRootGroupItem->addChild(pChild);
 	ui.treeWidget->setItemWidget(pChild, 0, pContactItem);
 
+	m_groupMap.insert(pChild, sDeps);
 }
 
 void CCMainWindow::resizeEvent(QResizeEvent * event)
@@ -286,6 +293,20 @@ bool CCMainWindow::eventFilter(QObject * obj, QEvent * event)
 	return false;
 }
 
+void CCMainWindow::mousePressEvent(QMouseEvent * event)
+{
+	if (qApp->widgetAt(event->pos()) != ui.searchLineEdit && ui.searchLineEdit->hasFocus())
+	{
+		ui.searchLineEdit->clearFocus();
+	}
+	else if (qApp->widgetAt(event->pos()) != ui.lineEdit && ui.lineEdit->hasFocus())
+	{
+		ui.lineEdit->clearFocus();
+	}
+
+	BasicWindow::mousePressEvent(event);
+}
+
 void CCMainWindow::onItemClicked(QTreeWidgetItem * item, int column)
 {
 	bool bIsChild = item->data(0, Qt::UserRole).toBool();
@@ -328,6 +349,28 @@ void CCMainWindow::onItemCollapsed(QTreeWidgetItem * item)
 
 void CCMainWindow::onItemDoubleClicked(QTreeWidgetItem * item, int column)
 {
+	bool bIsClild = item->data(0, Qt::UserRole).toBool();
+	if (bIsClild)
+	{
+		QString strGroup = m_groupMap.value(item);
+
+		if (strGroup == QString::fromLocal8Bit("公司群"))
+		{
+			WindowManager::getInstance()->addNewTalkWindow(item->data(0, Qt::UserRole + 1).toString(), COMPANY);
+		}
+		else if (strGroup == QString::fromLocal8Bit("人事部"))
+		{
+			WindowManager::getInstance()->addNewTalkWindow(item->data(0, Qt::UserRole + 1).toString(), PERSONELGROUP);
+		}
+		else if (strGroup == QString::fromLocal8Bit("市场部"))
+		{
+			WindowManager::getInstance()->addNewTalkWindow(item->data(0, Qt::UserRole + 1).toString(), MARKETGROUP);
+		}
+		else if (strGroup == QString::fromLocal8Bit("研发部"))
+		{
+			WindowManager::getInstance()->addNewTalkWindow(item->data(0, Qt::UserRole + 1).toString(), DEVELOPMENTGROUP);
+		}
+	}
 }
 
 void CCMainWindow::onAppIconClicked()

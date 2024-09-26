@@ -33,6 +33,7 @@ private:
 private:
 	void resizeEvent(QResizeEvent *event);
 	bool eventFilter(QObject *obj, QEvent * event);
+	void mousePressEvent(QMouseEvent *event);
 
 private slots:
 	void onAppIconClicked();
@@ -43,5 +44,6 @@ private slots:
 
 private:
     Ui::CCMainWindowClass ui;
+	QMap<QTreeWidgetItem*, QString> m_groupMap;		// 所有分组的分组项
 
 };

@@ -89,15 +89,19 @@
     <ClCompile Include="CommonUtils.cpp" />
     <ClCompile Include="contactitem.cpp" />
     <ClCompile Include="custommenu.cpp" />
+    <ClCompile Include="emotionlabelitem.cpp" />
     <ClCompile Include="emotionwindow.cpp" />
     <ClCompile Include="notifymanager.cpp" />
     <ClCompile Include="qclicklabel.cpp" />
     <ClCompile Include="rootcontactitem.cpp" />
     <ClCompile Include="skinwindow.cpp" />
     <ClCompile Include="systray.cpp" />
+    <ClCompile Include="talkwindow.cpp" />
+    <ClCompile Include="talkwindowitem.cpp" />
     <ClCompile Include="talkwindowshell.cpp" />
     <ClCompile Include="titlebar.cpp" />
     <ClCompile Include="userlogin.cpp" />
+    <ClCompile Include="windowmanager.cpp" />
     <QtRcc Include="CCMainWindow.qrc" />
     <QtUic Include="CCMainWindow.ui" />
     <QtMoc Include="CCMainWindow.h" />
@@ -106,6 +110,8 @@
     <QtUic Include="contactitem.ui" />
     <QtUic Include="emotionwindow.ui" />
     <QtUic Include="skinwindow.ui" />
+    <QtUic Include="talkwindow.ui" />
+    <QtUic Include="talkwindowitem.ui" />
     <QtUic Include="talkwindowshell.ui" />
     <QtUic Include="userlogin.ui" />
   </ItemGroup>
@@ -120,6 +126,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonUtils.h" />
+    <QtMoc Include="windowmanager.h" />
+    <QtMoc Include="talkwindow.h" />
+    <QtMoc Include="talkwindowitem.h" />
+    <QtMoc Include="emotionlabelitem.h" />
     <QtMoc Include="emotionwindow.h" />
     <QtMoc Include="talkwindowshell.h" />
     <QtMoc Include="contactitem.h" />

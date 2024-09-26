@@ -12,5 +12,18 @@ public:
 	~EmotionWindow();
 
 private:
+	void initControl();
+
+private slots:
+	void addEmotion(int emotionNum);
+
+signals:
+	void signalEmotionWindowHide();
+	void signalEmotionItemClicked(int emotionNum);
+
+protected:
+	void paintEvent(QPaintEvent *event) override; 
+
+private:
 	Ui::EmotionWindow ui;
 };

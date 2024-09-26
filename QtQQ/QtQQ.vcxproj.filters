@@ -79,6 +79,18 @@
     <ClCompile Include="emotionwindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="emotionlabelitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="talkwindowitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="talkwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="windowmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="titlebar.h">
@@ -117,6 +129,18 @@
     <QtMoc Include="emotionwindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="emotionlabelitem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="talkwindowitem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="talkwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="windowmanager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonUtils.h">
@@ -137,6 +161,12 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="emotionwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="talkwindowitem.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="talkwindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
