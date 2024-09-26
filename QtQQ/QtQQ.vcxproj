@@ -92,6 +92,7 @@
     <ClCompile Include="custommenu.cpp" />
     <ClCompile Include="emotionlabelitem.cpp" />
     <ClCompile Include="emotionwindow.cpp" />
+    <ClCompile Include="msgwebview.cpp" />
     <ClCompile Include="notifymanager.cpp" />
     <ClCompile Include="qclicklabel.cpp" />
     <ClCompile Include="qmsgtextedit.cpp" />
@@ -128,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonUtils.h" />
+    <QtMoc Include="msgwebview.h" />
     <QtMoc Include="qmsgtextedit.h" />
     <QtMoc Include="windowmanager.h" />
     <QtMoc Include="talkwindow.h" />

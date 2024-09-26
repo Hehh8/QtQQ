@@ -94,6 +94,9 @@
     <ClCompile Include="qmsgtextedit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="msgwebview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="titlebar.h">
@@ -145,6 +148,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="qmsgtextedit.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="msgwebview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
