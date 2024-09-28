@@ -3,6 +3,9 @@
 #include "contactitem.h"
 #include "CommonUtils.h"
 #include "windowmanager.h"
+#include <QToolTip>
+#include <QFile>
+#include <QMessageBox>
 
 TalkWindow::TalkWindow(QWidget *parent, const QString &uid, GroupType groupType)
 	: QWidget(parent)
@@ -22,6 +25,8 @@ TalkWindow::~TalkWindow()
 
 void TalkWindow::addEmotionImage(int emotionNum)
 {
+	ui.textEdit->setFocus();
+	ui.textEdit->addEmotionUrl(emotionNum);
 }
 
 void TalkWindow::setWindowName(const QString & name)
@@ -31,6 +36,47 @@ void TalkWindow::setWindowName(const QString & name)
 
 void TalkWindow::onSendBtnClicked(bool)
 {
+	if (ui.textEdit->toPlainText().isEmpty())
+	{
+		QToolTip::showText(this->mapToGlobal(QPoint(630, 660)), 
+			QString::fromLocal8Bit("发送的信息不能为空!"),
+			this, QRect(0, 0, 120, 100), 2000);
+		return;
+	}
+
+	QString &html = ui.textEdit->document()->toHtml();
+
+	// 文本html如果没有字体则添加字体
+	if (!html.contains(".png") && !html.contains("</span>"))
+	{
+		QString fontHtml;
+		QString text = ui.textEdit->toPlainText();
+		QFile file(":/Resources/MainWindow/MsgHtml/msgFont.txt");
+
+		if (file.open(QIODevice::ReadOnly))
+		{
+			fontHtml = file.readAll();
+			fontHtml.replace("%1", text);
+			file.close();
+		}
+		else
+		{
+			QMessageBox::information(this, QString::fromLocal8Bit("提示"),
+				QString::fromLocal8Bit("msgFont.txt不存在"));
+			return;
+		}
+
+		if (!html.contains(fontHtml))
+		{
+			html.replace(text, fontHtml);
+		}
+	}
+
+	ui.textEdit->clear();
+	ui.textEdit->deleteAllEmotionImage();
+
+	ui.msgWidget->appendMsg(html);
+
 }
 
 
@@ -95,6 +141,7 @@ void TalkWindow::initControl()
 		break;
 	default:
 	{
+		initPtoPTalk();
 	}
 		break;
 	}

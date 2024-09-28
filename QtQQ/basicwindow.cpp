@@ -74,8 +74,9 @@ void BasicWindow::loadStyleSheet(const QString & sheetName)
 								.arg(r).arg(g).arg(b);
 
 		setStyleSheet(qsstyleSheet);
-		file.close();
 	}
+
+	file.close();
 }
 
 // 背景图
@@ -147,6 +148,16 @@ void BasicWindow::onShowQuit(bool)
 	QApplication::quit();
 }
 
+// 鼠标移动事件
+void BasicWindow::mouseMoveEvent(QMouseEvent * event)
+{
+	if (m_mousePressed && (event->buttons() && Qt::LeftButton))
+	{
+		move(event->globalPos() - m_mousePoint);
+		event->accept();
+	}
+}
+
 // 鼠标按下事件
 void BasicWindow::mousePressEvent(QMouseEvent * event)
 {
@@ -154,16 +165,6 @@ void BasicWindow::mousePressEvent(QMouseEvent * event)
 	{
 		m_mousePressed = true;
 		m_mousePoint = event->globalPos() - pos();
-		event->accept();
-	}
-}
-
-// 鼠标移动事件
-void BasicWindow::mouseMoveEvent(QMouseEvent * event)
-{
-	if (m_mousePressed && (event->buttons() & Qt::LeftButton))
-	{
-		move(event->globalPos() - m_mousePoint);
 		event->accept();
 	}
 }

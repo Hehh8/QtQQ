@@ -77,7 +77,7 @@ void TalkWindowShell::initControl()
 	ui.listWidget->setStyle(new CustomProxyStyle(this));
 
 	connect(ui.listWidget, &QListWidget::itemClicked, this, &TalkWindowShell::onTalkWindowItemClicked);
-	connect(m_emotionWindow, SIGNAL(signalEmotionItemClicked(int)), this, SLOT(onEmotionClicked(int)));
+	connect(m_emotionWindow, SIGNAL(signalEmotionItemClicked(int)), this, SLOT(onEmotionItemClicked(int)));
 }
 
 void TalkWindowShell::onEmotionBtnClicked(bool)
