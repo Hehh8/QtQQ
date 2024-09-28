@@ -7,8 +7,8 @@
 class MsgHtmlObj : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(QString msgLHtmlTmpl MEMVER m_msgLHtmlTmpl NOTIFY signalMsgHtml)		// 发来的信息
-	Q_PROPERTY(QString msgRHtmlTmpl MEMVER m_msgRHtmlTmpl NOTIFY signalMsgHtml)		// 我发的信息
+	Q_PROPERTY(QString msgLHtmlTmpl MEMBER m_msgLHtmlTmpl NOTIFY signalMsgHtml)		// 发来的信息
+	Q_PROPERTY(QString msgRHtmlTmpl MEMBER m_msgRHtmlTmpl NOTIFY signalMsgHtml)		// 我发的信息
 
 
 public:

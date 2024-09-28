@@ -490,7 +490,7 @@
             <number>1</number>
            </property>
            <item>
-            <widget class="QWidget" name="msgWidget" native="true"/>
+            <widget class="MsgWebView" name="msgWidget" native="true"/>
            </item>
           </layout>
          </widget>
@@ -820,6 +820,12 @@
    <class>QMsgTextEdit</class>
    <extends>QTextEdit</extends>
    <header location="global">qmsgtextedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MsgWebView</class>
+   <extends>QWidget</extends>
+   <header location="global">msgwebview.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
