@@ -28,7 +28,7 @@ public:
 
 public:
 	// 添加新的聊天窗口
-	void addTalkWindow(TalkWindow *talkWindow, TalkWindowItem *talkWindowItem, GroupType grouptype);
+	void addTalkWindow(TalkWindow *talkWindow, TalkWindowItem *talkWindowItem, const QString uid /*GroupType grouptype*/);
 
 	// 设置当前聊天窗口
 	void setCurrentWidget(QWidget *widget);

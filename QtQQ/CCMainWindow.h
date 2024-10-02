@@ -5,7 +5,7 @@
 
 class QTreeWidgetItem;
 
-
+extern QString gLoginEmployeeID;
 
 class CCMainWindow : public BasicWindow
 {
@@ -28,7 +28,7 @@ public:
 
 private:
 	void updateSearchStyle();	// 更新搜索样式
-	void addGroupDeps(QTreeWidgetItem *pRootGroupItem, const QString &sDeps);
+	void addGroupDeps(QTreeWidgetItem *pRootGroupItem, int depID);
 
 private:
 	void resizeEvent(QResizeEvent *event);

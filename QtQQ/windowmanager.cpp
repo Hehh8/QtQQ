@@ -1,6 +1,7 @@
 #include "windowmanager.h"
 
-
+#include <QSqlQuery>
+#include <QSqlQueryModel>
 
 // 单例模式, 创建全局静态对象
 Q_GLOBAL_STATIC(WindowManager, theInstance);
@@ -13,11 +14,6 @@ WindowManager::WindowManager()
 
 WindowManager::~WindowManager()
 {
-}
-
-WindowManager * WindowManager::getInstance()
-{
-	return theInstance();
 }
 
 QWidget * WindowManager::findWindowName(const QString & qsWindowName)
@@ -45,7 +41,12 @@ void WindowManager::addWindowName(const QString & qsWindowName, QWidget * qWidge
 	}
 }
 
-void WindowManager::addNewTalkWindow(const QString & uid, GroupType groupType, const QString strPeople)
+WindowManager * WindowManager::getInstance()
+{
+	return theInstance();
+}
+
+void WindowManager::addNewTalkWindow(const QString & uid/*, GroupType groupType, const QString strPeople*/)
 {
 	if (m_talkwindowshell == nullptr)
 	{
@@ -58,45 +59,69 @@ void WindowManager::addNewTalkWindow(const QString & uid, GroupType groupType, c
 	QWidget * widget = findWindowName(uid);
 	if (!widget)
 	{
-		TalkWindow *talkWindow = new TalkWindow(m_talkwindowshell, uid, groupType);
+		TalkWindow *talkWindow = new TalkWindow(m_talkwindowshell, uid);
 		TalkWindowItem *talkWindowItem = new TalkWindowItem(talkWindow);
 
-		switch (groupType)
+		// 判断是群聊还是单聊
+		QSqlQueryModel sqlDepModel;
+		QString strSqlModel = QString("SELECT department_name, sign FROM tab_department WHERE departmentID = :departmentID");
+		sqlDepModel.setQuery(strSqlModel);
+		int rows = sqlDepModel.rowCount();
+		QString strWindowName, strMsgLabel;
+
+		if (rows == 0)	// 单聊
 		{
-		case COMPANY:
-		{
-			talkWindow->setWindowName(QStringLiteral("公司群"));
-			talkWindowItem->setMsgLabelContent(QStringLiteral("公司群"));
+			QString sql = QString("SELECT employee_name, employee_sign FROM tab_employee WHERE emplpyeeID = :emplpyeeID");
+			sqlDepModel.setQuery(sql);
 		}
-			break;
-		case PERSONELGROUP:
-		{
-			talkWindow->setWindowName(QStringLiteral("人事部"));
-			talkWindowItem->setMsgLabelContent(QStringLiteral("人事部"));
-		}
-			break;
-		case DEVELOPMENTGROUP:
-		{
-			talkWindow->setWindowName(QStringLiteral("研发部"));
-			talkWindowItem->setMsgLabelContent(QStringLiteral("研发部"));
-		}
-			break;
-		case MARKETGROUP:
-		{
-			talkWindow->setWindowName(QStringLiteral("市场部"));
-			talkWindowItem->setMsgLabelContent(QStringLiteral("市场部"));
-		}
-			break;
-		case PTOP:
-		{
-			talkWindow->setWindowName(strPeople);
-			talkWindowItem->setMsgLabelContent(strPeople);
-		}
-			break;
-		default:
-			break;
-		}
-		m_talkwindowshell->addTalkWindow(talkWindow, talkWindowItem, groupType);
+		
+		QModelIndex indexDepIndex, signIndex;
+		indexDepIndex = sqlDepModel.index(0, 0);	// 0行0列
+		signIndex = sqlDepModel.index(0, 1);		// 0行1列
+		strWindowName = sqlDepModel.data(signIndex).toString();
+		strMsgLabel = sqlDepModel.data(indexDepIndex).toString();
+
+		talkWindow->setWindowName(strWindowName);			// 窗口名称
+		talkWindowItem->setMsgLabelContent(strMsgLabel);	//左侧联系人文本显示
+
+		m_talkwindowshell->addTalkWindow(talkWindow, talkWindowItem, uid);
+
+// 		switch (groupType)
+// 		{
+// 		case COMPANY:
+// 		{
+// 			talkWindow->setWindowName(QStringLiteral("公司群"));
+// 			talkWindowItem->setMsgLabelContent(QStringLiteral("公司群"));
+// 		}
+// 			break;
+// 		case PERSONELGROUP:
+// 		{
+// 			talkWindow->setWindowName(QStringLiteral("人事部"));
+// 			talkWindowItem->setMsgLabelContent(QStringLiteral("人事部"));
+// 		}
+// 			break;
+// 		case DEVELOPMENTGROUP:
+// 		{
+// 			talkWindow->setWindowName(QStringLiteral("研发部"));
+// 			talkWindowItem->setMsgLabelContent(QStringLiteral("研发部"));
+// 		}
+// 			break;
+// 		case MARKETGROUP:
+// 		{
+// 			talkWindow->setWindowName(QStringLiteral("市场部"));
+// 			talkWindowItem->setMsgLabelContent(QStringLiteral("市场部"));
+// 		}
+// 			break;
+// 		case PTOP:
+// 		{
+// 			talkWindow->setWindowName(strPeople);
+// 			talkWindowItem->setMsgLabelContent(strPeople);
+// 		}
+// 			break;
+// 		default:
+// 			break;
+// 		}
+// 		m_talkwindowshell->addTalkWindow(talkWindow, talkWindowItem, groupType);
 	}
 	else
 	{

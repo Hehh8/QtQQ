@@ -7,10 +7,10 @@
 #include <QFile>
 #include <QMessageBox>
 
-TalkWindow::TalkWindow(QWidget *parent, const QString &uid, GroupType groupType)
+TalkWindow::TalkWindow(QWidget *parent, const QString &uid/*, GroupType groupType*/)
 	: QWidget(parent)
 	, m_talkId(uid)
-	, m_groupType(groupType)
+	//, m_groupType(groupType)
 {
 	ui.setupUi(this);
 	WindowManager::getInstance()->addWindowName(m_talkId, this);
@@ -86,7 +86,7 @@ void TalkWindow::onItemDoubleClicked(QTreeWidgetItem* item, int column)
 	if (bIsChild)
 	{
 		QString strPeopleName = m_groupPeopleMap.value(item);
-		WindowManager::getInstance()->addNewTalkWindow(item->data(0, Qt::UserRole + 1).toString(), PTOP, strPeopleName);
+		WindowManager::getInstance()->addNewTalkWindow(item->data(0, Qt::UserRole + 1).toString()/*, PTOP, strPeopleName*/);
 	}
 }
 
@@ -112,6 +112,7 @@ void TalkWindow::initControl()
 
 	connect(ui.treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(onItemDoubleClicked(QTreeWidgetItem*, int)));
 
+	/*
 	switch (m_groupType)
 	{
 	case COMPANY:
@@ -145,115 +146,116 @@ void TalkWindow::initControl()
 	}
 		break;
 	}
+	*/
 }
 
-void TalkWindow::initCompanyTalk()
-{
-	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
-	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-
-	pRootItem->setData(0, Qt::UserRole, 0);
-	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
-
-	ui.treeWidget->setFixedHeight(646);
-
-	int nEmployeeNum = 50;
-	QString qsGroupName = QString::fromLocal8Bit("公司群%1/%2").arg(0).arg(nEmployeeNum);
-	pItemName->setText(qsGroupName);
-
-	// 插入分组节点
-	ui.treeWidget->addTopLevelItem(pRootItem);
-	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
-
-	// 展开
-	pRootItem->setExpanded(true);
-
-	for (int i = 0; i < nEmployeeNum; ++i)
-	{
-		addPeopleInfo(pRootItem);
-	}
-}
-
-void TalkWindow::initPersonTalk()
-{
-	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
-	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-
-	pRootItem->setData(0, Qt::UserRole, 0);
-	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
-
-	ui.treeWidget->setFixedHeight(646);
-
-	int nEmployeeNum = 5;
-	QString qsGroupName = QString::fromLocal8Bit("人事部%1/%2").arg(0).arg(nEmployeeNum);
-	pItemName->setText(qsGroupName);
-
-	// 插入分组节点
-	ui.treeWidget->addTopLevelItem(pRootItem);
-	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
-
-	// 展开
-	pRootItem->setExpanded(true);
-
-	for (int i = 0; i < nEmployeeNum; ++i)
-	{
-		addPeopleInfo(pRootItem);
-	}
-}
-
-void TalkWindow::initDevelopTalk()
-{
-	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
-	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-
-	pRootItem->setData(0, Qt::UserRole, 0);
-	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
-
-	ui.treeWidget->setFixedHeight(646);
-
-	int nEmployeeNum = 32;
-	QString qsGroupName = QString::fromLocal8Bit("研发部%1/%2").arg(0).arg(nEmployeeNum);
-	pItemName->setText(qsGroupName);
-
-	// 插入分组节点
-	ui.treeWidget->addTopLevelItem(pRootItem);
-	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
-
-	// 展开
-	pRootItem->setExpanded(true);
-
-	for (int i = 0; i < nEmployeeNum; ++i)
-	{
-		addPeopleInfo(pRootItem);
-	}
-}
-
-void TalkWindow::initMarkTalk()
-{
-	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
-	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-
-	pRootItem->setData(0, Qt::UserRole, 0);
-	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
-
-	ui.treeWidget->setFixedHeight(646);
-
-	int nEmployeeNum = 8;
-	QString qsGroupName = QString::fromLocal8Bit("市场部%1/%2").arg(0).arg(nEmployeeNum);
-	pItemName->setText(qsGroupName);
-
-	// 插入分组节点
-	ui.treeWidget->addTopLevelItem(pRootItem);
-	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
-
-	// 展开
-	pRootItem->setExpanded(true);
-
-	for (int i = 0; i < nEmployeeNum; ++i)
-	{
-		addPeopleInfo(pRootItem);
-	}
-}
+// void TalkWindow::initCompanyTalk()
+// {
+// 	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
+// 	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+// 
+// 	pRootItem->setData(0, Qt::UserRole, 0);
+// 	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
+// 
+// 	ui.treeWidget->setFixedHeight(646);
+// 
+// 	int nEmployeeNum = 50;
+// 	QString qsGroupName = QString::fromLocal8Bit("公司群%1/%2").arg(0).arg(nEmployeeNum);
+// 	pItemName->setText(qsGroupName);
+// 
+// 	// 插入分组节点
+// 	ui.treeWidget->addTopLevelItem(pRootItem);
+// 	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
+// 
+// 	// 展开
+// 	pRootItem->setExpanded(true);
+// 
+// 	for (int i = 0; i < nEmployeeNum; ++i)
+// 	{
+// 		addPeopleInfo(pRootItem);
+// 	}
+// }
+// 
+// void TalkWindow::initPersonTalk()
+// {
+// 	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
+// 	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+// 
+// 	pRootItem->setData(0, Qt::UserRole, 0);
+// 	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
+// 
+// 	ui.treeWidget->setFixedHeight(646);
+// 
+// 	int nEmployeeNum = 5;
+// 	QString qsGroupName = QString::fromLocal8Bit("人事部%1/%2").arg(0).arg(nEmployeeNum);
+// 	pItemName->setText(qsGroupName);
+// 
+// 	// 插入分组节点
+// 	ui.treeWidget->addTopLevelItem(pRootItem);
+// 	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
+// 
+// 	// 展开
+// 	pRootItem->setExpanded(true);
+// 
+// 	for (int i = 0; i < nEmployeeNum; ++i)
+// 	{
+// 		addPeopleInfo(pRootItem);
+// 	}
+// }
+// 
+// void TalkWindow::initDevelopTalk()
+// {
+// 	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
+// 	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+// 
+// 	pRootItem->setData(0, Qt::UserRole, 0);
+// 	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
+// 
+// 	ui.treeWidget->setFixedHeight(646);
+// 
+// 	int nEmployeeNum = 32;
+// 	QString qsGroupName = QString::fromLocal8Bit("研发部%1/%2").arg(0).arg(nEmployeeNum);
+// 	pItemName->setText(qsGroupName);
+// 
+// 	// 插入分组节点
+// 	ui.treeWidget->addTopLevelItem(pRootItem);
+// 	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
+// 
+// 	// 展开
+// 	pRootItem->setExpanded(true);
+// 
+// 	for (int i = 0; i < nEmployeeNum; ++i)
+// 	{
+// 		addPeopleInfo(pRootItem);
+// 	}
+// }
+// 
+// void TalkWindow::initMarkTalk()
+// {
+// 	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
+// 	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+// 
+// 	pRootItem->setData(0, Qt::UserRole, 0);
+// 	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
+// 
+// 	ui.treeWidget->setFixedHeight(646);
+// 
+// 	int nEmployeeNum = 8;
+// 	QString qsGroupName = QString::fromLocal8Bit("市场部%1/%2").arg(0).arg(nEmployeeNum);
+// 	pItemName->setText(qsGroupName);
+// 
+// 	// 插入分组节点
+// 	ui.treeWidget->addTopLevelItem(pRootItem);
+// 	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
+// 
+// 	// 展开
+// 	pRootItem->setExpanded(true);
+// 
+// 	for (int i = 0; i < nEmployeeNum; ++i)
+// 	{
+// 		addPeopleInfo(pRootItem);
+// 	}
+// }
 
 void TalkWindow::initPtoPTalk()
 {

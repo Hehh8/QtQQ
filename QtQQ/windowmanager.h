@@ -18,7 +18,7 @@ public:
 	void deleteWindowName(const QString &qsWindowName);
 	void addWindowName(const QString &qsWindowName, QWidget *qWidget);
 	static WindowManager *getInstance();
-	void addNewTalkWindow(const QString &uid, GroupType groupType = COMPANY, const QString strPeople = "");
+	void addNewTalkWindow(const QString &uid/*, GroupType groupType = COMPANY, const QString strPeople = ""*/);
 
 private:
 	TalkWindowShell *m_talkwindowshell;
