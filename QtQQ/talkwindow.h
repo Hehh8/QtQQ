@@ -24,12 +24,15 @@ private slots:
 
 private:
 	void initControl();
+	void initGroupTalkStatus();
+	int getCompDepID();
 // 	void initCompanyTalk();	// 初始化公司群聊天
 // 	void initPersonTalk();	// 初始化人事部聊天
 // 	void initDevelopTalk();	// 初始化研发部聊天
 // 	void initMarkTalk();	// 初始化研发部聊天
+	void initTalkWindow();	// 初始化群聊
 	void initPtoPTalk();	// 初始化单独聊天
-	void addPeopleInfo(QTreeWidgetItem *pRootGroupItem);
+	void addPeopleInfo(QTreeWidgetItem *pRootGroupItem, int employeeID);
 
 private:
 	Ui::TalkWindow ui;

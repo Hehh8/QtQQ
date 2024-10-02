@@ -405,6 +405,7 @@ void TalkWindow::addPeopleInfo(QTreeWidgetItem *pRootGroupItem, int employeeID)
 
 	QString str = pContactItem->getUserName();
 	m_groupPeopleMap.insert(pChild, str);
+
 }
 
 void TalkWindow::onSetEmotionBtnStatus()
