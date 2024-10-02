@@ -375,7 +375,7 @@ void TalkWindow::addPeopleInfo(QTreeWidgetItem *pRootGroupItem, int employeeID)
 
 	// 添加子节点
 	pChild->setData(0, Qt::UserRole, 1);
-	pChild->setData(0, Qt::UserRole + 1, QString::number((int)pChild));
+	pChild->setData(0, Qt::UserRole + 1, employeeID);
 	ContactItem *pContactItem = new ContactItem(ui.treeWidget);
 
 	// 获取用户名、签名、头像

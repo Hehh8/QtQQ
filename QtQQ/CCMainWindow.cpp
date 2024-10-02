@@ -287,7 +287,6 @@ void CCMainWindow::initContactTree()
 
 void CCMainWindow::resizeEvent(QResizeEvent * event)
 {
-	setUserName(QString::fromLocal8Bit("12345678900000000"));
 	BasicWindow::resizeEvent(event);
 }
 

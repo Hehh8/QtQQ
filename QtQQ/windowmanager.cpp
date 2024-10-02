@@ -2,6 +2,7 @@
 
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+#include <QDebug>
 
 // 单例模式, 创建全局静态对象
 Q_GLOBAL_STATIC(WindowManager, theInstance);
@@ -64,14 +65,14 @@ void WindowManager::addNewTalkWindow(const QString & uid/*, GroupType groupType,
 
 		// 判断是群聊还是单聊
 		QSqlQueryModel sqlDepModel;
-		QString strSqlModel = QString("SELECT department_name, sign FROM tab_department WHERE departmentID = :departmentID");
+		QString strSqlModel = QString("SELECT department_name, sign FROM tab_department WHERE departmentID = %1").arg(uid);
 		sqlDepModel.setQuery(strSqlModel);
 		int rows = sqlDepModel.rowCount();
 		QString strWindowName, strMsgLabel;
 
 		if (rows == 0)	// 单聊
 		{
-			QString sql = QString("SELECT employee_name, employee_sign FROM tab_employee WHERE emplpyeeID = :emplpyeeID");
+			QString sql = QString("SELECT employee_name, employee_sign FROM tab_employee WHERE employeeID = %1").arg(uid);
 			sqlDepModel.setQuery(sql);
 		}
 		
@@ -83,6 +84,8 @@ void WindowManager::addNewTalkWindow(const QString & uid/*, GroupType groupType,
 
 		talkWindow->setWindowName(strWindowName);			// 窗口名称
 		talkWindowItem->setMsgLabelContent(strMsgLabel);	//左侧联系人文本显示
+
+		qDebug() << strWindowName << "      " << strSqlModel;
 
 		m_talkwindowshell->addTalkWindow(talkWindow, talkWindowItem, uid);
 
