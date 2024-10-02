@@ -32,18 +32,18 @@ public:
 	}
 };
 
-CCMainWindow::CCMainWindow(QWidget *parent)
+CCMainWindow::CCMainWindow(QString account, bool isAccountLogin, QWidget *parent)
     : BasicWindow(parent)
+	, m_account(account)
+	, m_isAccountLogin(isAccountLogin)
 {
     ui.setupUi(this);
 
 	// 设置主窗口风格
 	setWindowFlags(windowFlags() | Qt::Tool);
-
 	loadStyleSheet("CCMainWindow");
 
 	initControl();
-
 	initTimer();
 }
 
@@ -73,7 +73,7 @@ void CCMainWindow::initControl()
 	ui.treeWidget->setStyle(new CustomProxyStyle);
 
 	setLevelPixmap(0);
-	setHeadPixmap(":/Resources/MainWindow/girl.png");
+	setHeadPixmap(getHeadPicturePath());
 	setStatusMenuIcon(":/Resources/MainWindow/StatusSucceeded.png");
 
 	QHBoxLayout *appupLayout = new QHBoxLayout;
@@ -109,6 +109,22 @@ void CCMainWindow::initControl()
 
 	SysTray *sysTray = new SysTray(this);
 
+}
+
+QString CCMainWindow::getHeadPicturePath()
+{
+	QString strPicturePath;
+	QString strSqlPicture;
+	QSqlQuery queryPicture;
+
+	strSqlPicture = "SELECT picture FROM tab_employee WHERE employeeID = :employeeID";
+	queryPicture.prepare(strSqlPicture);
+	queryPicture.bindValue(":employeeID", gLoginEmployeeID);
+	queryPicture.exec();
+	queryPicture.next();
+	strPicturePath = queryPicture.value(0).toString();
+
+	return strPicturePath;
 }
 
 void CCMainWindow::updateSearchStyle()

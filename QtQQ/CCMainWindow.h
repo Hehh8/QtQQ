@@ -12,12 +12,13 @@ class CCMainWindow : public BasicWindow
     Q_OBJECT
 
 public:
-    CCMainWindow(QWidget *parent = nullptr);
+    CCMainWindow(QString account, bool isAccountLogin, QWidget *parent = nullptr);
 	virtual ~CCMainWindow();
 
 public:
 	void initTimer();								// 初始化计时器
 	void initControl();
+	QString getHeadPicturePath();
 	void setUserName(const QString &userName);		// 设置用户名
 	void setLevelPixmap(int level);					// 设置等级
 	void setHeadPixmap(const QString &headPath);	// 设置头像
@@ -45,5 +46,6 @@ private slots:
 private:
     Ui::CCMainWindowClass ui;
 	QMap<QTreeWidgetItem*, QString> m_groupMap;		// 所有分组的分组项
-
+	bool m_isAccountLogin;
+	QString m_account;
 };
