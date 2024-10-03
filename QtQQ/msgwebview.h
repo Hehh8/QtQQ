@@ -52,6 +52,9 @@ private:
 	// Qt中所有DOM节点(属性、说明、文本等)都可以使用QDomNode表示
 	QList<QStringList> parseDocNode(const QDomNode &node);	// 解析节点
 
+signals:
+	void signalSendMsg(QString &strData, int &msgType, QString file = "");
+
 private:
 	MsgHtmlObj *m_msgHtmlObj;
 	

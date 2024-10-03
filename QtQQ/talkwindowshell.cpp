@@ -6,6 +6,8 @@
 #include <QListWidget>
 #include <QSplitter>
 #include <QSqlQueryModel>
+#include <QMessageBox>
+#include <QFile>
 
 TalkWindowShell::TalkWindowShell(QWidget *parent)
 	: BasicWindow(parent)
@@ -13,6 +15,19 @@ TalkWindowShell::TalkWindowShell(QWidget *parent)
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 	initControl();
+
+	QFile file("Resources/MainWindow/MsgHtml/msgtmpl.js");
+	if (!file.size())
+	{
+		QStringList employeeIDList;
+		getEmployeeID(employeeIDList);
+		if (!createJSFile(employeeIDList))
+		{
+			QMessageBox::information(this,
+				QString::fromLocal8Bit("提示"),
+				QString::fromLocal8Bit("更新js文件数据失败"));
+		}
+	}
 }
 
 TalkWindowShell::~TalkWindowShell()
@@ -80,6 +95,10 @@ QMap<QListWidgetItem*, QWidget*> TalkWindowShell::getTalkWindowItemMap() const
 	return m_talkWindowItemMap;
 }
 
+void TalkWindowShell::updateSendTcpMsg(QString & strData, int & msgType, QString file)
+{
+}
+
 void TalkWindowShell::initControl()
 {
 	loadStyleSheet("TalkWindow");
@@ -96,6 +115,132 @@ void TalkWindowShell::initControl()
 
 	connect(ui.listWidget, &QListWidget::itemClicked, this, &TalkWindowShell::onTalkWindowItemClicked);
 	connect(m_emotionWindow, SIGNAL(signalEmotionItemClicked(int)), this, SLOT(onEmotionItemClicked(int)));
+}
+
+void TalkWindowShell::initTcpSocket()
+{
+	m_tcpClientSocket = new QTcpSocket(this);
+	m_tcpClientSocket->connectToHost("127.0.0.1", gtcpPort);
+}
+
+void TalkWindowShell::getEmployeeID(QStringList& employeeList)
+{
+	QSqlQueryModel queryModel;
+	queryModel.setQuery("SELECT employeeID FROM tab_employee WHERE status = 1");
+	
+	int employeeNum = queryModel.rowCount();
+	QModelIndex index;
+	for (int i = 0; i < employeeNum; ++i)
+	{
+		index = queryModel.index(i, 0);
+		employeeList << queryModel.data(index).toString();
+	}
+
+}
+
+bool TalkWindowShell::createJSFile(QStringList & employeeList)
+{
+	QString strFileTxt = "Resources/MainWindow/MsgHtml/msgtmpl.txt";
+	QFile fileRead(strFileTxt);
+	QString strFile;
+
+	if (fileRead.open(QIODevice::ReadOnly))
+	{
+		strFile = fileRead.readAll();
+		fileRead.close();
+	}
+	else
+	{
+		QMessageBox::information(this,
+			QString::fromLocal8Bit("提示"),
+			QString::fromLocal8Bit("读取msgtmpl.txt失败"));
+
+		return false;
+	}
+
+	// 替换(external0, appendHtml0用作自己发信息使用)
+	QFile fileWrite("Resources/MainWindow/MsgHtml/msgtmpl.js");
+	if (fileWrite.open(QIODevice::WriteOnly | QIODevice::Truncate))
+	{
+		// 更新空值
+		QString strSourceInitNull = "var external = null;";
+		QString strSourceInit = "external = channel.objects.external;";
+		QString strSourceNew = "new QWebChannel(qt.webChannelTransport,"
+			"function(channel) {"
+			"external = channel.objects.external;"
+			"}); ";
+
+		// 脚本中有双引号无法直接赋值,采用读文件方式
+		QString strSourceRecvHtml;
+		QFile fileRecvHtml("Resources/MainWindow/MsgHtml/recvHtml.txt");
+		if (fileRecvHtml.open(QIODevice::ReadOnly))
+		{
+			strSourceRecvHtml = fileRecvHtml.readAll();
+			fileRecvHtml.close();
+		}
+		else
+		{
+			QMessageBox::information(this,
+				QString::fromLocal8Bit("提示"),
+				QString::fromLocal8Bit("读取recvHtml.txt失败"));
+
+			return false;
+		}
+
+		// 保存替换后的脚本
+		QString strReplaceInitNull;
+		QString strReplaceInit;
+		QString strReplaceNew;
+		QString strReplaceRecvHtml;
+
+		for (int i = 0; i < employeeList.length(); i++)
+		{
+			// 编辑替换后的空值
+			QString strInitNull = strSourceInitNull;
+			strInitNull.replace("external", QString("external_%1").arg(employeeList.at(i)));
+			strReplaceInitNull += strInitNull;
+			strReplaceInitNull += "\n";
+
+			// 编辑替换后的初始值
+			QString strInit = strSourceInit;
+			strInit.replace("external", QString("external_%1").arg(employeeList.at(i)));
+			strReplaceInit += strInit;
+			strReplaceInit += "\n";
+
+			// 编辑替换后的newWebChannel
+			QString strNew = strSourceNew;
+			strNew.replace("external", QString("external_%1").arg(employeeList.at(i)));
+			strReplaceNew += strNew;
+			strReplaceNew += "\n";
+
+			// 编辑替换后的recvHtml
+			QString strRecvHtml = strSourceRecvHtml;
+			strRecvHtml.replace("external", QString("external_%1").arg(employeeList.at(i)));
+			strRecvHtml.replace("recvHtml", QString("recvHtml_%1").arg(employeeList.at(i)));
+			strReplaceRecvHtml += strRecvHtml;
+			strReplaceRecvHtml += "\n";
+		}
+
+		strFile.replace(strSourceInitNull, strReplaceInitNull);
+		strFile.replace(strSourceInit, strReplaceInit);
+		strFile.replace(strSourceNew, strReplaceNew);
+		strFile.replace(strSourceRecvHtml, strReplaceRecvHtml);
+
+		QTextStream stream(&fileWrite);
+		stream << strFile;
+		fileWrite.close();
+
+		return true;
+	}
+	else
+	{
+		QMessageBox::information(this,
+			QString::fromLocal8Bit("提示"),
+			QString::fromLocal8Bit("写msgtmpl.js失败"));
+
+		return false;
+	}
+	return false;
 }
 
 void TalkWindowShell::onEmotionBtnClicked(bool)
