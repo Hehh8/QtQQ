@@ -4,6 +4,7 @@
 #include <QHeaderView>
 #include <QTableWidgetItem>
 #include <QSqlRecord>
+#include <QSqlQuery>
 
 const int tcpPort = 8888;
 QtQQ_Server::QtQQ_Server(QWidget *parent)
@@ -23,9 +24,15 @@ QtQQ_Server::QtQQ_Server(QWidget *parent)
 	m_quertInfoModel.setQuery("SELECT * FROM tab_employee");
 	ui.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+	// 初始化查询公司群所有员工信息
+	m_depID = getCompDepID();
+	m_compDepID = m_depID;
+
 	setDepNameMap();
 	setStatusMap();
 	setOnlineMap();
+
+	initComboBoxData();
 
 	updateTableData();
 
@@ -36,6 +43,59 @@ QtQQ_Server::QtQQ_Server(QWidget *parent)
 	connect(m_timer, &QTimer::timeout, this, &QtQQ_Server::onRefresh);
 
 	initTcpSocket();
+}
+
+void QtQQ_Server::initComboBoxData()
+{
+	QString itemText;	// 组合框的文本
+
+	// 获取公司总的部门数
+	QSqlQueryModel queryDepModel;
+	queryDepModel.setQuery("SELECT * FROM tab_department");
+	int depCounts = queryDepModel.rowCount() - 1;	// 公司群不属于公司部门
+
+	for (int i = 0; i < depCounts; i++)
+	{
+		itemText = ui.employeeDepBox->itemText(i);
+		QSqlQuery queryDepID;
+		QString strSql = "SELECT departmentID FROM tab_department WHERE department_name = :department_name";
+		queryDepID.prepare(strSql);
+		queryDepID.bindValue(":department_name", itemText);
+		queryDepID.exec();
+		queryDepID.next();
+
+		// 设置员工所属部门组合框的数据为相应的部门QQ号
+		ui.employeeDepBox->setItemData(i, queryDepID.value(0).toInt());
+	}
+
+	for (int i = 0; i < depCounts + 1; i++)
+	{
+		itemText = ui.departmentBox->itemText(i);
+		QSqlQuery queryDepID;
+		QString strSql = "SELECT departmentID FROM tab_department WHERE department_name = :department_name";
+		queryDepID.prepare(strSql);
+		queryDepID.bindValue(":department_name", itemText);
+		queryDepID.exec();
+		queryDepID.next();
+
+		// 设置部门组合框的数据为相应的部门QQ号
+		ui.employeeDepBox->setItemData(i, queryDepID.value(0).toInt());
+	}
+
+	// 多一个"公司群"部门
+	for (int i = 0; i < depCounts + 1; i++)
+	{
+		itemText = ui.departmentBox->itemText(i);
+		QSqlQuery queryDepID;
+		QString strSql = "SELECT departmentID FROM tab_department WHERE department_name = :department_name";
+		queryDepID.prepare(strSql);
+		queryDepID.bindValue(":department_name", itemText);
+		queryDepID.exec();
+		queryDepID.next();
+
+		// 设置部门组合框的数据为相应的部门QQ号
+		ui.departmentBox->setItemData(i, queryDepID.value(0).toInt());
+	}
 }
 
 void QtQQ_Server::initTcpSocket()
@@ -152,9 +212,60 @@ void QtQQ_Server::onRefresh()
 	updateTableData(m_depID, m_employeeID);
 }
 
-int QtQQ_Server::getCompDepId()
+void QtQQ_Server::on_queryDepartmentBtn_clicked()
 {
-	return 0;
+	ui.queryIDLineEdit->clear();
+	m_employeeID = 0;
+	m_depID = ui.departmentBox->currentData().toInt();
+	updateTableData(m_depID);
+}
+
+void QtQQ_Server::on_queryIDBtn_clicked()
+{
+	ui.departmentBox->setCurrentIndex(0);
+	m_depID = m_compDepID;
+
+	// 检测员工QQ号是否输入
+	if (!ui.queryIDLineEdit->text().length())
+	{
+		QMessageBox::information(NULL, QString::fromLocal8Bit("提示"),
+			QString::fromLocal8Bit("请输入员工QQ号"));
+		ui.queryIDLineEdit->setFocus();
+		return;
+	}
+
+	// 获取用户输入的QQ号
+	int employeeID = ui.queryIDLineEdit->text().toInt();
+
+	QSqlQuery queryInfo;
+	QString strSql = "SELECT * FROM tab_employee WHERE employeeID = :employeeID";
+	queryInfo.prepare(strSql);
+	queryInfo.bindValue(":employeeID", employeeID);
+	queryInfo.exec();
+	if (!queryInfo.next())
+	{
+		QMessageBox::information(NULL, QString::fromLocal8Bit("提示"),
+			QString::fromLocal8Bit("员工QQ号不存在"));
+		ui.queryIDLineEdit->setFocus();
+		return;
+	}
+	else
+	{
+		m_employeeID = employeeID;
+	}
+
+	updateTableData(m_depID, m_employeeID);
+}
+
+int QtQQ_Server::getCompDepID()
+{
+	QString strSql = "SELECT departmentID FROM tab_department WHERE department_name = :department_name";
+	QSqlQuery queryCompDepID;
+	queryCompDepID.prepare(strSql);
+	queryCompDepID.bindValue(":department_name", QString::fromLocal8Bit("公司群"));
+	queryCompDepID.exec();
+	queryCompDepID.first();
+	return queryCompDepID.value(0).toInt();
 }
 
 void QtQQ_Server::onUdpBroadMsg(QByteArray & btData)

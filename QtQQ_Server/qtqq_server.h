@@ -14,6 +14,7 @@ public:
     QtQQ_Server(QWidget *parent = Q_NULLPTR);
 
 private:
+	void initComboBoxData();	// 初始化组合框的数据
 	void initTcpSocket();
 	bool connectMysql();
 	void setDepNameMap();
@@ -24,6 +25,8 @@ private:
 private slots:
 	void onUdpBroadMsg(QByteArray &btData);
 	void onRefresh();
+	void on_queryDepartmentBtn_clicked();	// 根据群QQ号查找员工(点击信号与槽函数自动连接)
+	void on_queryIDBtn_clicked();			// 根据员工QQ号查找
 
 private:
     Ui::QtQQ_ServerClass ui;
@@ -37,6 +40,6 @@ private:
 	QMap<QString, QString> m_onlineMap;		// 在线状态
 
 	QSqlQueryModel m_quertInfoModel;	// 查询所有员工的信息模型
-	int getCompDepId();
+	int getCompDepID();
 	TcpServer *m_tcpServer;
 };
