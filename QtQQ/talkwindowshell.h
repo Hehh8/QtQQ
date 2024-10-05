@@ -11,15 +11,7 @@ class TalkWindowItem;
 class QListWidgetItem;
 class EmotionWindow;
 
-enum GroupType {
-	COMPANY = 0,		// 公司群
-	PERSONELGROUP,		// 人事部
-	DEVELOPMENTGROUP,	// 研发部
-	MARKETGROUP,		// 市场部
-	PTOP				// 单独聊天
-};
-
-const int gtcpPort = 6666;
+const int gtcpPort = 8888;
 
 class TalkWindowShell : public BasicWindow
 {
@@ -36,17 +28,17 @@ public:
 	// 设置当前聊天窗口
 	void setCurrentWidget(QWidget *widget);
 
-	QMap<QListWidgetItem*, QWidget*> getTalkWindowItemMap() const;
-
-public slots:
-	void onEmotionBtnClicked(bool);	// 表情按钮执行后的槽函数
-	void updateSendTcpMsg(QString &strData, int &msgType, QString file = "");
+	const QMap<QListWidgetItem*, QWidget*>& getTalkWindowItemMap() const;
 
 private:
 	void initControl();
 	void initTcpSocket();	// 初始化TCP
 	void getEmployeeID(QStringList& employeeList);	// 获取所有员工QQ号
 	bool createJSFile(QStringList &employeeList);
+
+public slots:
+	void onEmotionBtnClicked(bool);	// 表情按钮执行后的槽函数
+	void updateSendTcpMsg(QString &strData, int &msgType, QString fileName = "");
 
 private slots:
 	void onTalkWindowItemClicked(QListWidgetItem *item);	// 左侧列表点击后执行的槽函数

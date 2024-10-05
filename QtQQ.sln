@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.35116.124
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtQQ", "QtQQ\QtQQ.vcxproj", "{5B54006D-4097-49D5-8368-46237FE374F0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtQQ_Server", "QtQQ_Server\QtQQ_Server.vcxproj", "{A9B6DAC0-DDA7-44B6-910D-EBA5A7EBC13C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +17,10 @@ Global
 		{5B54006D-4097-49D5-8368-46237FE374F0}.Debug|x64.Build.0 = Debug|x64
 		{5B54006D-4097-49D5-8368-46237FE374F0}.Release|x64.ActiveCfg = Release|x64
 		{5B54006D-4097-49D5-8368-46237FE374F0}.Release|x64.Build.0 = Release|x64
+		{A9B6DAC0-DDA7-44B6-910D-EBA5A7EBC13C}.Debug|x64.ActiveCfg = Debug|x64
+		{A9B6DAC0-DDA7-44B6-910D-EBA5A7EBC13C}.Debug|x64.Build.0 = Debug|x64
+		{A9B6DAC0-DDA7-44B6-910D-EBA5A7EBC13C}.Release|x64.ActiveCfg = Release|x64
+		{A9B6DAC0-DDA7-44B6-910D-EBA5A7EBC13C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

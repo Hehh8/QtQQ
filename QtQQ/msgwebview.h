@@ -45,7 +45,7 @@ class MsgWebView : public QWebEngineView
 public:
 	MsgWebView(QWidget *parent);
 	~MsgWebView();
-	void appendMsg(const QString & html);
+	void appendMsg(const QString & html, QString strObj = "0");
 
 private:
 	QList<QStringList> parseHtml(const QString &html);	// ½âÎöhtml

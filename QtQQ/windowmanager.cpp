@@ -90,46 +90,8 @@ void WindowManager::addNewTalkWindow(const QString & uid/*, GroupType groupType,
 		talkWindow->setWindowName(strWindowName);			// 窗口名称
 		talkWindowItem->setMsgLabelContent(strMsgLabel);	//左侧联系人文本显示
 
-		qDebug() << strWindowName << "      " << strSqlModel;
-
 		m_talkwindowshell->addTalkWindow(talkWindow, talkWindowItem, uid);
 
-// 		switch (groupType)
-// 		{
-// 		case COMPANY:
-// 		{
-// 			talkWindow->setWindowName(QStringLiteral("公司群"));
-// 			talkWindowItem->setMsgLabelContent(QStringLiteral("公司群"));
-// 		}
-// 			break;
-// 		case PERSONELGROUP:
-// 		{
-// 			talkWindow->setWindowName(QStringLiteral("人事部"));
-// 			talkWindowItem->setMsgLabelContent(QStringLiteral("人事部"));
-// 		}
-// 			break;
-// 		case DEVELOPMENTGROUP:
-// 		{
-// 			talkWindow->setWindowName(QStringLiteral("研发部"));
-// 			talkWindowItem->setMsgLabelContent(QStringLiteral("研发部"));
-// 		}
-// 			break;
-// 		case MARKETGROUP:
-// 		{
-// 			talkWindow->setWindowName(QStringLiteral("市场部"));
-// 			talkWindowItem->setMsgLabelContent(QStringLiteral("市场部"));
-// 		}
-// 			break;
-// 		case PTOP:
-// 		{
-// 			talkWindow->setWindowName(strPeople);
-// 			talkWindowItem->setMsgLabelContent(strPeople);
-// 		}
-// 			break;
-// 		default:
-// 			break;
-// 		}
-// 		m_talkwindowshell->addTalkWindow(talkWindow, talkWindowItem, groupType);
 	}
 	else
 	{

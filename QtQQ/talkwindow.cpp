@@ -37,6 +37,11 @@ void TalkWindow::setWindowName(const QString & name)
 	ui.nameLabel->setText(name);
 }
 
+QString TalkWindow::getTalkId()
+{
+	return m_talkId;
+}
+
 void TalkWindow::onSendBtnClicked(bool)
 {
 	if (ui.textEdit->toPlainText().isEmpty())
@@ -123,42 +128,6 @@ void TalkWindow::initControl()
 	{
 		initPtoPTalk();
 	}
-
-	/*
-	switch (m_groupType)
-	{
-	case COMPANY:
-	{
-		initCompanyTalk();
-	}
-		break;
-	case PERSONELGROUP:
-	{
-		initPersonTalk();
-	}
-		break;
-	case DEVELOPMENTGROUP:
-	{
-		initDevelopTalk();
-	}
-		break;
-	case MARKETGROUP:
-	{
-		initMarkTalk();
-	}
-		break;
-	case PTOP:
-	{
-		initPtoPTalk();
-	}
-		break;
-	default:
-	{
-		initPtoPTalk();
-	}
-		break;
-	}
-	*/
 }
 
 void TalkWindow::initGroupTalkStatus()
@@ -190,114 +159,6 @@ int TalkWindow::getCompDepID()
 	int companyID = queryDepID.value(0).toInt();
 	return companyID;
 }
-
-// void TalkWindow::initCompanyTalk()
-// {
-// 	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
-// 	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-// 
-// 	pRootItem->setData(0, Qt::UserRole, 0);
-// 	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
-// 
-// 	ui.treeWidget->setFixedHeight(646);
-// 
-// 	int nEmployeeNum = 50;
-// 	QString qsGroupName = QString::fromLocal8Bit("公司群%1/%2").arg(0).arg(nEmployeeNum);
-// 	pItemName->setText(qsGroupName);
-// 
-// 	// 插入分组节点
-// 	ui.treeWidget->addTopLevelItem(pRootItem);
-// 	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
-// 
-// 	// 展开
-// 	pRootItem->setExpanded(true);
-// 
-// 	for (int i = 0; i < nEmployeeNum; ++i)
-// 	{
-// 		addPeopleInfo(pRootItem);
-// 	}
-// }
-// 
-// void TalkWindow::initPersonTalk()
-// {
-// 	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
-// 	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-// 
-// 	pRootItem->setData(0, Qt::UserRole, 0);
-// 	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
-// 
-// 	ui.treeWidget->setFixedHeight(646);
-// 
-// 	int nEmployeeNum = 5;
-// 	QString qsGroupName = QString::fromLocal8Bit("人事部%1/%2").arg(0).arg(nEmployeeNum);
-// 	pItemName->setText(qsGroupName);
-// 
-// 	// 插入分组节点
-// 	ui.treeWidget->addTopLevelItem(pRootItem);
-// 	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
-// 
-// 	// 展开
-// 	pRootItem->setExpanded(true);
-// 
-// 	for (int i = 0; i < nEmployeeNum; ++i)
-// 	{
-// 		addPeopleInfo(pRootItem);
-// 	}
-// }
-// 
-// void TalkWindow::initDevelopTalk()
-// {
-// 	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
-// 	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-// 
-// 	pRootItem->setData(0, Qt::UserRole, 0);
-// 	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
-// 
-// 	ui.treeWidget->setFixedHeight(646);
-// 
-// 	int nEmployeeNum = 32;
-// 	QString qsGroupName = QString::fromLocal8Bit("研发部%1/%2").arg(0).arg(nEmployeeNum);
-// 	pItemName->setText(qsGroupName);
-// 
-// 	// 插入分组节点
-// 	ui.treeWidget->addTopLevelItem(pRootItem);
-// 	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
-// 
-// 	// 展开
-// 	pRootItem->setExpanded(true);
-// 
-// 	for (int i = 0; i < nEmployeeNum; ++i)
-// 	{
-// 		addPeopleInfo(pRootItem);
-// 	}
-// }
-// 
-// void TalkWindow::initMarkTalk()
-// {
-// 	QTreeWidgetItem *pRootItem = new QTreeWidgetItem();
-// 	pRootItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-// 
-// 	pRootItem->setData(0, Qt::UserRole, 0);
-// 	RootContactitem *pItemName = new RootContactitem(false, ui.treeWidget);
-// 
-// 	ui.treeWidget->setFixedHeight(646);
-// 
-// 	int nEmployeeNum = 8;
-// 	QString qsGroupName = QString::fromLocal8Bit("市场部%1/%2").arg(0).arg(nEmployeeNum);
-// 	pItemName->setText(qsGroupName);
-// 
-// 	// 插入分组节点
-// 	ui.treeWidget->addTopLevelItem(pRootItem);
-// 	ui.treeWidget->setItemWidget(pRootItem, 0, pItemName);
-// 
-// 	// 展开
-// 	pRootItem->setExpanded(true);
-// 
-// 	for (int i = 0; i < nEmployeeNum; ++i)
-// 	{
-// 		addPeopleInfo(pRootItem);
-// 	}
-// }
 
 void TalkWindow::initTalkWindow()
 {
@@ -394,9 +255,10 @@ void TalkWindow::addPeopleInfo(QTreeWidgetItem *pRootGroupItem, int employeeID)
 
 	QPixmap pixMask;
 	pixMask.load(":/Resources/MainWindow/head_mask.png");
-	QPixmap pixSrc(strPicturePath);
+	QImage pixSrc;
+	pixSrc.load(strPicturePath);
 
-	pContactItem->setHeadPixmap(CommonUtils::getRoundImage(pixSrc, pixMask, pContactItem->getHeadLabelSize()));
+	pContactItem->setHeadPixmap(CommonUtils::getRoundImage(QPixmap::fromImage(pixSrc), pixMask, pContactItem->getHeadLabelSize()));
 	pContactItem->setUserName(strName);
 	pContactItem->setSignName(strSign);
 

@@ -9,12 +9,15 @@
 #include <QMessageBox>
 #include <QFile>
 
+extern QString gLoginEmployeeID;
+
 TalkWindowShell::TalkWindowShell(QWidget *parent)
 	: BasicWindow(parent)
 {
 	ui.setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 	initControl();
+	initTcpSocket();
 
 	QFile file("Resources/MainWindow/MsgHtml/msgtmpl.js");
 	if (!file.size())
@@ -90,13 +93,9 @@ void TalkWindowShell::setCurrentWidget(QWidget * widget)
 	ui.rightStackedWidget->setCurrentWidget(widget);
 }
 
-QMap<QListWidgetItem*, QWidget*> TalkWindowShell::getTalkWindowItemMap() const
+const QMap<QListWidgetItem*, QWidget*>& TalkWindowShell::getTalkWindowItemMap() const
 {
 	return m_talkWindowItemMap;
-}
-
-void TalkWindowShell::updateSendTcpMsg(QString & strData, int & msgType, QString file)
-{
 }
 
 void TalkWindowShell::initControl()
@@ -251,6 +250,81 @@ void TalkWindowShell::onEmotionBtnClicked(bool)
 	emotionPoint.setX(emotionPoint.x() + 170);
 	emotionPoint.setY(emotionPoint.y() + 220);
 	m_emotionWindow->move(emotionPoint);
+}
+
+// 文本数据包格式:群聊标志 + 发信息员工QQ号 + 收信息员工QQ号 + 信息类型 + 数据长度 + 数据
+// 表情数据包格式:群聊标志 + 发信息员工QQ号 + 收信息员工QQ号 + 信息类型 + 表情个数 + images + 数据
+void TalkWindowShell::updateSendTcpMsg(QString & strData, int & msgType, QString fileName)
+{
+	// 获取当前活动聊天窗口
+	TalkWindow *curTalkWindow = dynamic_cast<TalkWindow*>(ui.rightStackedWidget->currentWidget());
+	QString talkId = curTalkWindow->getTalkId();
+
+	QString strGroupFlag;
+	QString strSend;
+	if (talkId.length() == 4)	// 群QQ的长度
+	{
+		strGroupFlag = "1";
+	}
+	else
+	{
+		strGroupFlag = "0";
+	}
+
+	int sourceDataLength = strData.length();
+	int dataLength = QString::number(sourceDataLength).length();
+	QString strDataLength;
+	if (msgType == 1)	// 发送文本信息
+	{
+		// 文本信息长度约定为5
+		if (dataLength == 1)
+		{
+			strDataLength = "0000" + QString::number(sourceDataLength);
+		}
+		else if (dataLength == 2)
+		{
+			strDataLength = "000" + QString::number(sourceDataLength);
+		}
+		else if (dataLength == 3)
+		{
+			strDataLength = "00" + QString::number(sourceDataLength);
+		}
+		else if (dataLength == 4)
+		{
+			strDataLength = "0" + QString::number(sourceDataLength);
+		}
+		else if (dataLength == 5)
+		{
+			strDataLength = QString::number(sourceDataLength);
+		}
+		else
+		{
+			QMessageBox::information(this,
+				QString::fromLocal8Bit("提示"),
+				QString::fromLocal8Bit("不合理的数据长度!"));
+		}
+
+		// 文本数据包格式:群聊标志 + 发信息员工QQ号 + 收信息员工QQ号 + 信息类型 + 数据长度 + 数据
+		strSend = strGroupFlag + gLoginEmployeeID + talkId + "1" + strDataLength + strData;
+	}
+	else if (msgType == 0)	// 表情信息
+	{
+		// 表情数据包格式:群聊标志 + 发信息员工QQ号 + 收信息员工QQ号 + 信息类型 + 表情个数 + images + 数据
+		strSend = strGroupFlag + gLoginEmployeeID + talkId + "0" + strData;
+	}
+	else if (msgType == 2)	// 文件信息
+	{
+		// 文件数据格式:群聊标志 + 发信息员工QQ号 + 收信息员工QQ号 + 信息类型 + 文件长度 + "bytes" + 文件名称 + "data_begin" + 文件内容
+		QByteArray bt = strData.toUtf8();
+		QString strLength = QString::number(bt.length());
+		strSend = strGroupFlag + gLoginEmployeeID + talkId + "2" + strLength + "bytes" + fileName + "data_begin" + strData;
+	}
+
+	QByteArray dataBt;
+	dataBt.resize(strSend.length());
+	dataBt = strSend.toUtf8();
+	m_tcpClientSocket->write(dataBt);
+
 }
 
 void TalkWindowShell::onTalkWindowItemClicked(QListWidgetItem * item)
