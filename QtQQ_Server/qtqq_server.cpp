@@ -9,6 +9,7 @@
 const int tcpPort = 8888;
 QtQQ_Server::QtQQ_Server(QWidget *parent)
     : QDialog(parent)
+	, m_pixPath("")
 {
     ui.setupUi(this);
 
@@ -255,6 +256,49 @@ void QtQQ_Server::on_queryIDBtn_clicked()
 	}
 
 	updateTableData(m_depID, m_employeeID);
+}
+
+// 注销
+void QtQQ_Server::on_logoutBtn_clicked()
+{
+	ui.queryIDLineEdit->clear();
+	ui.departmentBox->setCurrentIndex(0);
+
+	// 检测员工QQ号是否输入
+	if (!ui.logoutIDLineEdit->text().length())
+	{
+		QMessageBox::information(NULL, QString::fromLocal8Bit("提示"),
+			QString::fromLocal8Bit("请输入员工QQ号"));
+		ui.queryIDLineEdit->setFocus();
+		return;
+	}
+
+	// 获取用户输入的QQ号
+	int employeeID = ui.logoutIDLineEdit->text().toInt();
+
+	QSqlQuery queryInfo;
+	QString strSql = "SELECT * FROM tab_employee WHERE employeeID = :employeeID";
+	queryInfo.prepare(strSql);
+	queryInfo.bindValue(":employeeID", employeeID);
+	queryInfo.exec();
+	if (!queryInfo.next())
+	{
+		QMessageBox::information(NULL, QString::fromLocal8Bit("提示"),
+			QString::fromLocal8Bit("员工QQ号不存在"));
+		ui.queryIDLineEdit->setFocus();
+		return;
+	}
+	else
+	{
+		// 注销操作,更新数据库数据,将员工的状态设为0
+		QSqlQuery queryUpdate;
+		strSql = "UPDATE tab_employee SET status = 0 WHERE employeeID = :employeeID";
+		queryUpdate.prepare(strSql);
+		queryUpdate.bindValue(":employeeID", employeeID);
+		queryUpdate.exec();
+		QMessageBox::information(NULL, QString::fromLocal8Bit("提示"),
+			QString::fromLocal8Bit("员工%1的账号注销成功").arg(employeeID));
+	}
 }
 
 int QtQQ_Server::getCompDepID()

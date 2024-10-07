@@ -27,6 +27,7 @@ private slots:
 	void onRefresh();
 	void on_queryDepartmentBtn_clicked();	// 根据群QQ号查找员工(点击信号与槽函数自动连接)
 	void on_queryIDBtn_clicked();			// 根据员工QQ号查找
+	void on_logoutBtn_clicked();			// 注销员工QQ号
 
 private:
     Ui::QtQQ_ServerClass ui;
@@ -35,6 +36,7 @@ private:
 	int m_compDepID;	// 公司群QQ号
 	int m_depID;		// 部门QQ号
 	int m_employeeID;	// 员工QQ号
+	QString m_pixPath;	// 头像路径
 	QMap<QString, QString> m_statusMap;		// 状态
 	QMap<QString, QString> m_depNameMap;	// 部门名称
 	QMap<QString, QString> m_onlineMap;		// 在线状态
