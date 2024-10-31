@@ -5,6 +5,7 @@
 #include <QTableWidgetItem>
 #include <QSqlRecord>
 #include <QSqlQuery>
+#include <QFileDialog>
 
 const int tcpPort = 8888;
 QtQQ_Server::QtQQ_Server(QWidget *parent)
@@ -299,6 +300,76 @@ void QtQQ_Server::on_logoutBtn_clicked()
 		QMessageBox::information(NULL, QString::fromLocal8Bit("提示"),
 			QString::fromLocal8Bit("员工%1的账号注销成功").arg(employeeID));
 	}
+}
+
+void QtQQ_Server::on_selectPictureBtn_clicked()
+{
+	// 获取选择的头像路径
+	m_pixPath = QFileDialog::getOpenFileName(this, QString::fromLocal8Bit("选择头像"), ".", "*.png;;*.jpg");
+	// 图片路径格式设置 /替换为\  "xxx\xxx\xxx.png"
+	m_pixPath = QDir::toNativeSeparators(m_pixPath);
+
+	if (!m_pixPath.size())
+	{
+		return;
+	}
+
+	// 将头像显示到标签
+	QPixmap pixmap;
+	pixmap.load(m_pixPath);
+
+	qreal widthRatio = (qreal)ui.headLabel->width() / (qreal)pixmap.width();
+	qreal heightRatio = (qreal)ui.headLabel->height() / (qreal)pixmap.height();
+
+	QSize size(pixmap.width() * widthRatio, pixmap.height() * heightRatio);
+	ui.headLabel->setPixmap(pixmap.scaled(size));
+}
+
+void QtQQ_Server::on_addBtn_clicked()
+{
+	// 检查员工输入姓名
+	QString strName = ui.nameLineEdit->text();
+	if (!strName.size())
+	{
+		QMessageBox::information(this, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit("请输入员工姓名"));
+		ui.nameLineEdit->setFocus();
+		return;
+	}
+
+	// 检查员工选择头像
+	if (!m_pixPath.size())
+	{
+		QMessageBox::information(this, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit("请选择员工头像"));
+		return;
+	}
+
+	// 向数据库插入新的员工数据
+	// 获取员工QQ号
+	QSqlQuery maxEmployeeID;
+	QString strSql = "SELECT MAX(employeeID) FROM tab_employee";
+	maxEmployeeID.prepare(strSql);
+	maxEmployeeID.exec();
+	maxEmployeeID.next();
+
+	int employeeID = maxEmployeeID.value(0).toInt() + 1;
+
+	// 获取员工部门号
+	int depID = ui.employeeDepBox->currentData().toInt();
+
+	
+	QSqlQuery insert;
+	QString strSqlInsert = "INSERT INTO tab_employee(departmentID, employeeID, employee_name, picture) VALUES(:departmentID, :employeeID, :employee_name, :picture)";
+	insert.prepare(strSqlInsert);
+	insert.bindValue(":departmentID", depID);
+	insert.bindValue(":employeeID", employeeID);
+	insert.bindValue(":employee_name", strName);
+	insert.bindValue(":picture", m_pixPath);
+	insert.exec();
+
+	QMessageBox::information(this, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit("新增员工成功"));
+	m_pixPath = "";
+	ui.nameLineEdit->clear();
+	ui.headLabel->setText(QStringLiteral("员工寸照"));
 }
 
 int QtQQ_Server::getCompDepID()

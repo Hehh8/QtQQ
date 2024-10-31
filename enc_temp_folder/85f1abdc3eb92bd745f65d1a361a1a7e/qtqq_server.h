@@ -5,7 +5,6 @@
 #include "TcpServer.h"
 #include <QSqlQueryModel>
 #include <QTimer>
-#include <QUdpSocket>
 
 class QtQQ_Server : public QDialog
 {
@@ -46,6 +45,5 @@ private:
 
 	QSqlQueryModel m_quertInfoModel;	// 查询所有员工的信息模型
 	int getCompDepID();
-	TcpServer *m_tcpServer;		// tcp服务端
-	QUdpSocket *m_udoSender;	// udp广播
+	TcpServer *m_tcpServer;
 };
